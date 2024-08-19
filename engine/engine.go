@@ -26,8 +26,12 @@ func main() {
 	}
 }
 
-func RollDice(input string) []int {
+func RollDice(input string) ([]int, error) {
 	myLexer := lexer.NewLexer(input)
 	myParser := parser.NewParser(*myLexer)
-	return myParser.Parse()
+	result, err := myParser.Parse()
+	if err != nil {
+		return []int{}, err
+	}
+	return result, nil
 }

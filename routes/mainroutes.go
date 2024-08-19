@@ -33,7 +33,10 @@ func ProductRoutes(e *echo.Echo) {
 			return c.NoContent(http.StatusBadRequest)
 		}
 
-		rawOutput := engine.RollDice(u.CurrentResult + u.Input)
+		rawOutput, err := engine.RollDice(u.CurrentResult + u.Input)
+		if err != nil {
+			return err
+		}
 
 		var strNumbers []string
 		for _, num := range rawOutput {

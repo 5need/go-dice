@@ -17,7 +17,6 @@ type Parser struct {
 // TODO: add some sort of result metadata struct to a result like
 // average value (average of all numbers)
 // platonic average value (average of all numbers if they were all half of the face_count)
-// NOTE: only after a save or BS/WS because that way it's either make it or not make it
 
 // type resultMetadata struct {
 // 	result_average int
@@ -38,244 +37,279 @@ func NewParser(myLexer lexer.Lexer) *Parser {
 	return parser
 }
 
-// dicethingwhatever ::= ( basic_dice | result ) { result_modifier }
-func (parser *Parser) Parse() []int {
-	result := []int{}
-	if parser.currentToken.Type == lexer.TokenOpenBrackets {
-		result = parser.result()
-	} else if parser.currentToken.Type == lexer.TokenNumber {
-		result = parser.basic_dice()
-	} else {
-		panic("unexpected token")
-	}
-
-	result = parser.result_modifier(result)
-
-	fmt.Printf("result: %+v\n", result)
-	return result
-	// parser.result_modifier()
-}
-
-// basic_dice should turn into an array of rolled values
-func (parser *Parser) basic_dice() []int {
-	amount := parser.term()
-	if parser.currentToken.Type != lexer.TokenDiceSeparator {
-		panic("Expected a dice separator :(")
-	}
-	parser.nextToken()
-	face_count := parser.term()
-
-	results := make([]int, 0)
-	for i := 0; i < amount; i++ {
-		results = append(results, rand.Intn(face_count)+1)
-	}
-	return results
-}
-
-// term ::= unary { "*" unary}
-// just multiplication, and unary is always a positive int so just raw-dog it
-func (parser *Parser) term() int {
-	// unary
-	if parser.currentToken.Type != lexer.TokenNumber {
-		panic("Expected a number :(")
-	}
-	accumulator, err := strconv.Atoi(parser.currentToken.Literal)
+// program ::= roll { modifier }
+func (parser *Parser) Parse() ([]int, error) {
+	result, err := parser.roll()
 	if err != nil {
-		panic("Expected a number :(")
+		return []int{}, err
 	}
-	parser.nextToken()
+	for err == nil {
+		result, err = parser.modifier(result)
+	}
 
-	// { "*" unary }
-	for parser.currentToken.Type == lexer.TokenMultiply {
-		if parser.peekToken.Type != lexer.TokenNumber {
-			panic("Expected a number :(")
-		}
-		parser.nextToken() // on top of number now
-		currentNum, err := strconv.Atoi(parser.currentToken.Literal)
-		if err != nil {
-			panic("Expected a number :(")
-		}
-		accumulator *= currentNum
-		parser.nextToken()
-	}
-	// fmt.Println(accumulator)
-	return accumulator
+	fmt.Println(result)
+	return result, nil
 }
 
-// result ::= '[' int { "," int } ']'
-// [1,2,3]
-func (parser *Parser) result() []int {
-	results := make([]int, 0)
+// roll ::= ( dice | array )
+func (parser *Parser) roll() ([]int, error) {
+	result, err := parser.dice()
+	if err == nil {
+		return result, nil
+	}
+	result, err = parser.array()
+	if err == nil {
+		return result, nil
+	}
 
-	// [
-	if parser.currentToken.Type != lexer.TokenOpenBrackets {
-		panic("Expected an opening bracket")
+	return make([]int, 0), errors.New("Expected a roll")
+}
+
+// dice ::= number "d" number
+func (parser *Parser) dice() ([]int, error) {
+	amountOfDice, err := parser.number()
+	if err != nil {
+		return make([]int, 0), errors.New("Expected a number")
+	}
+	if parser.currentToken.Type != lexer.TokenDiceSeparator {
+		return make([]int, 0), errors.New("Expected a dice separator")
 	}
 	parser.nextToken()
+	faceCount, err := parser.number()
+	if err != nil {
+		return make([]int, 0), errors.New("Expected a number")
+	}
 
-	// int
+	results := make([]int, 0)
+
+	for i := 0; i < amountOfDice; i++ {
+		results = append(results, rand.Intn(faceCount)+1)
+	}
+
+	return results, nil
+}
+
+// number ::= an int, dummy
+func (parser *Parser) number() (int, error) {
 	if parser.currentToken.Type != lexer.TokenNumber {
-		panic("Expected a number :(")
+		return 0, errors.New("Expected a number")
 	}
 	num, err := strconv.Atoi(parser.currentToken.Literal)
 	if err != nil {
-		panic("Expected a number :(")
+		return 0, errors.New("Something stupid happened")
+	}
+	parser.nextToken()
+
+	return num, nil
+}
+
+// array ::= "[" { number { "," number } } "]"
+func (parser *Parser) array() ([]int, error) {
+	results := make([]int, 0)
+
+	if parser.currentToken.Type != lexer.TokenOpenBrackets {
+		return []int{}, errors.New("Expected an opening bracket")
+	}
+	parser.nextToken()
+
+	// in case of empty array
+	if parser.currentToken.Type == lexer.TokenCloseBrackets {
+		return []int{}, nil
+	}
+
+	num, err := parser.number()
+	if err != nil {
+		return []int{}, err
 	}
 	results = append(results, num)
 
-	parser.nextToken()
-	// { "," int }
-	for parser.currentToken.Type == lexer.TokenComma && parser.currentToken.Type != lexer.TokenCloseBrackets {
-		if parser.peekToken.Type != lexer.TokenNumber {
-			panic("Expected a number :(")
-		}
-		parser.nextToken() // on top of number now
-		currentNum, err := strconv.Atoi(parser.currentToken.Literal)
-		if err != nil {
-			panic("Expected a number :(")
-		}
-		results = append(results, currentNum)
-		parser.nextToken()
-	}
-
-	if parser.currentToken.Type != lexer.TokenCloseBrackets {
-		panic("Expected a closing bracket")
-	}
-	parser.nextToken()
-
-	return results
-}
-
-// result_modifier ::= { number "+" }
-func (parser *Parser) result_modifier(result []int) []int {
-	if parser.currentToken.Type == lexer.TokenEOF {
-		return result
-	}
-
-	modifiedResult := result
-
-	// var num int
-	var arr []int
-	var err error
-
-	for err == nil {
-		arr, err = parser.save()
-		if err == nil {
-			fmt.Println("saving", arr)
-			fmt.Println("before", modifiedResult)
-			tempResult := make([]int, 0)
-			for _, roll := range modifiedResult {
-				for _, v := range arr {
-					if v == roll {
-						tempResult = append(tempResult, roll)
-						break
-					}
-				}
+	// { "," number }
+	{
+		for parser.currentToken.Type == lexer.TokenComma && parser.currentToken.Type != lexer.TokenCloseBrackets {
+			if parser.peekToken.Type != lexer.TokenNumber {
+				return []int{}, errors.New("Expected a number")
 			}
-			modifiedResult = tempResult
-			fmt.Println("after ", modifiedResult)
-			fmt.Println()
-		}
-
-		arr, err = parser.reroll()
-		if err == nil {
-			fmt.Println("rerolling", arr)
-			fmt.Println("before", modifiedResult)
-			tempResult := make([]int, 0)
-			for _, roll := range modifiedResult {
-				rerollMe := false
-				for _, v := range arr {
-					if v == roll {
-						rerollMe = true
-						break
-					}
-				}
-				if rerollMe == true {
-					tempResult = append(tempResult, rand.Intn(6)+1)
-				} else {
-					tempResult = append(tempResult, roll)
-				}
+			parser.nextToken() // on top of number now
+			currentNum, err := parser.number()
+			if err != nil {
+				return []int{}, err
 			}
-			modifiedResult = tempResult
-			fmt.Println("after ", modifiedResult)
-			fmt.Println()
+
+			results = append(results, currentNum)
 		}
-	}
-
-	return modifiedResult
-}
-
-// save ::= range
-func (parser *Parser) save() ([]int, error) {
-	return parser.number_range()
-}
-
-// reroll ::= "rr" range
-func (parser *Parser) reroll() ([]int, error) {
-	// create a copy of the parser so I don't have to care about messing it up
-	parserCopy := *parser
-
-	if parserCopy.currentToken.Type != lexer.TokenReroll {
-		return make([]int, 0), errors.New("not a reroll")
 	}
 
 	parser.nextToken()
-	return parser.number_range()
+	return results, nil
 }
 
-// number_range ::= number { "+" | "-" | "s" }
-func (parser *Parser) number_range() ([]int, error) {
-	// create a copy of the parser so I don't have to care about messing it up
-	parserCopy := *parser
-
-	if parserCopy.currentToken.Type != lexer.TokenNumber {
-		return make([]int, 0), errors.New("not a range")
+// modifier ::= ( add_roll | remove_roll | reroll )
+func (parser *Parser) modifier(result []int) ([]int, error) {
+	newResult, err := parser.add_roll(result)
+	if err == nil {
+		return newResult, nil
 	}
+	newResult, err = parser.remove_roll(result)
+	if err == nil {
+		return newResult, nil
+	}
+	newResult, err = parser.reroll(result)
+	if err == nil {
+		return newResult, nil
+	}
+	return result, errors.New("Expected a modifier")
+	// parser.reroll()
 
-	num, err := strconv.Atoi(parserCopy.currentToken.Literal)
+	// return []int{}, nil
+}
+
+// add_roll ::= "+" roll
+func (parser *Parser) add_roll(result []int) ([]int, error) {
+	if parser.currentToken.Type != lexer.TokenPlus {
+		return result, errors.New("Expected a +")
+	}
+	parser.nextToken()
+	toAdd, err := parser.roll()
 	if err != nil {
-		panic("Expected a number :(")
+		return result, err
 	}
+	return append(result, toAdd...), nil
+}
 
-	switch parserCopy.peekToken.Type {
-	case lexer.TokenPlus:
-		// 4+ = [4,5,6]
-		result := make([]int, 0)
-		for i := 1; i <= 6; i++ {
-			if i >= num {
-				result = append(result, i)
+// remove_roll ::= "-" roll
+func (parser *Parser) remove_roll(result []int) ([]int, error) {
+	if parser.currentToken.Type != lexer.TokenMinus {
+		return result, errors.New("Expected a -")
+	}
+	parser.nextToken()
+
+	removeByIndex, err := parser.select_range()
+	if err == nil {
+		newResult := []int{}
+		fmt.Println(removeByIndex)
+		for _, value := range result {
+			amountToRemoveLeft := removeByIndex[value-1]
+			if amountToRemoveLeft != -1 {
+				if amountToRemoveLeft > 0 {
+					removeByIndex[value-1]--
+				} else {
+					newResult = append(newResult, value)
+				}
 			}
 		}
+		return newResult, nil
+	}
 
-		parser.nextToken()
-		parser.nextToken()
-		return result, nil
-	case lexer.TokenMinus:
-		// 4- = [1,2,3,4]
-		result := make([]int, 0)
-		for i := 1; i <= 6; i++ {
-			if i <= num {
-				result = append(result, i)
+	return result, nil
+}
+
+// plural ::= number "s"
+func (parser *Parser) plural() (int, error) {
+	if parser.peekToken.Type != lexer.TokenPlural {
+		return 0, errors.New("Expected a plural")
+	}
+	num, err := parser.number()
+	if err != nil {
+		return 0, err
+	}
+	parser.nextToken()
+	return num, nil
+}
+
+// range_up ::= number "+"
+func (parser *Parser) range_up() (int, error) {
+	if parser.peekToken.Type != lexer.TokenPlus {
+		return 0, errors.New("Expected a +")
+	}
+	num, err := parser.number()
+	if err != nil {
+		return 0, err
+	}
+	parser.nextToken()
+	return num, nil
+}
+
+// range_down ::= number "-"
+func (parser *Parser) range_down() (int, error) {
+	if parser.peekToken.Type != lexer.TokenMinus {
+		return 0, errors.New("Expected a -")
+	}
+	num, err := parser.number()
+	if err != nil {
+		return 0, err
+	}
+	parser.nextToken()
+	return num, nil
+}
+
+// select_range ::= ( plural | range_up | range_down | array )
+func (parser *Parser) select_range() ([]int, error) {
+	selectRange := []int{0, 0, 0, 0, 0, 0}
+	// [ 2, 0, 0, 0, 0, 0 ] means select two 1s
+	// [ 0, 0, 4, -1, 0, 0 ] means select four 3s and ALL 4s
+
+	num, err := parser.plural()
+	if err == nil {
+		selectRange[num-1] = -1
+		return selectRange, nil
+	}
+	num, err = parser.range_up()
+	if err == nil {
+		for index := range selectRange {
+			if num <= index+1 {
+				selectRange[index] = -1
 			}
 		}
-
-		parser.nextToken()
-		parser.nextToken()
-		return result, nil
-	case lexer.TokenPlural:
-		// 4s = [4]
-		result := make([]int, 0)
-		result = append(result, num)
-
-		parser.nextToken()
-		parser.nextToken()
-		return result, nil
-	default:
-		// 4 = [4]
-		result := make([]int, 0)
-		result = append(result, num)
-
-		parser.nextToken()
-		return result, nil
+		return selectRange, nil
 	}
+	num, err = parser.range_down()
+	if err == nil {
+		for index := range selectRange {
+			if num >= index+1 {
+				selectRange[index] = -1
+			}
+		}
+		return selectRange, nil
+	}
+	nums := []int{}
+	nums, err = parser.array()
+	if err == nil {
+		selectCounts := []int{0, 0, 0, 0, 0, 0}
+
+		for _, value := range nums {
+			selectCounts[value-1]++
+		}
+		return selectCounts, nil
+	}
+
+	return selectRange, errors.New("Expected a select_range")
+}
+
+// reroll ::= "rr" select_range
+func (parser *Parser) reroll(result []int) ([]int, error) {
+	fmt.Println(result)
+	if parser.currentToken.Type != lexer.TokenReroll {
+		return result, errors.New("Expected a rr")
+	}
+	parser.nextToken()
+	rerollByIndex, err := parser.select_range()
+	fmt.Println(rerollByIndex)
+	if err == nil {
+		newResult := []int{}
+		for _, value := range result {
+			amountToRerollLeft := rerollByIndex[value-1]
+			newValue := value
+			if amountToRerollLeft == -1 {
+				newValue = rand.Intn(6) + 1
+			} else if amountToRerollLeft > 0 {
+				rerollByIndex[value-1]--
+				newValue = rand.Intn(6) + 1
+			}
+			newResult = append(newResult, newValue)
+		}
+
+		return newResult, nil
+	}
+
+	return result, nil
 }
