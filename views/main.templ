@@ -1,0 +1,135 @@
+package views
+
+import (
+	"strconv"
+	"go-dice/models"
+)
+
+templ Main() {
+	<div
+		_="
+		def animate()
+			if the length of .sheen > 0
+				then set x to random .sheen
+				then take .animate-diceShine for x
+				then add .animate-diceShine to x
+			end
+		end
+		init wait 1s
+		then repeat forever
+			animate()
+			then wait 2s
+		end
+		"
+		class="animate-diceShine hidden"
+	></div>
+	@Base("Go-Dice") {
+		@Form("", "")
+		@DiceBox(models.NewRollStats())
+	}
+}
+
+templ Form(input string, currentResult string) {
+	<form hx-post="/" hx-swap="outerHTML" class="[&_input]:bg-transparent flex flex-col">
+		<input id="input" name="input" value={ input }/>
+		<input id="currentResult" name="currentResult" value={ currentResult }/>
+		<div class="flex flex-wrap">
+			<button type="button" _="on click set the value of #input to '1d6' then send submit to the closest <form/>">+1d6</button>
+		</div>
+		<button>submit</button>
+	</form>
+}
+
+templ DiceBox(rollStats models.RollStats) {
+	<ul id="diceBox" hx-swap-oob="outerHTML" class="flex flex-col overflow-x-auto">
+		for i := 5; i >= 0; i-- {
+			<li class="flex gap-2 py-4 min-w-max border-b border-ctp-surface0 last:border-none">
+				<button class="font-mono h-12 w-20 border-2 border-ctp-blue/10 flex items-center justify-center">
+					<img src="images/16/solid/arrow-path.svg" class="inline-block invert"/>
+					if i+1 != 1 {
+						<img src="images/16/solid/arrow-right.svg" class="inline-block invert opacity-50 mx-0.5"/>
+					}
+					if i+1 == 6 {
+						6s
+					} else if i+1 == 1 {
+						all
+					} else {
+						{ strconv.Itoa(i+1) }+
+					}
+				</button>
+				<div class="self-center w-8 text-center font-mono">
+					if rollStats.RollAmounts[i] > 0 {
+						{ strconv.Itoa(rollStats.RollAmounts[i]) }x
+					} else {
+						-
+					}
+				</div>
+				for _, roll := range rollStats.Rolls {
+					if roll == i+1 {
+						@Dice(roll)
+					}
+				}
+			</li>
+		}
+	</ul>
+}
+
+templ Dice(roll int) {
+	<label
+		data-roll={ strconv.Itoa(roll) }
+		class="
+		group
+		data-[roll='1']:bg-ctp-subtext0/25
+		data-[roll='2']:bg-ctp-text/25
+		data-[roll='3']:bg-ctp-green/25
+		data-[roll='4']:bg-ctp-blue/25
+		data-[roll='5']:bg-ctp-mauve/25
+		data-[roll='6']:bg-ctp-yellow/25
+		data-[roll='1']:text-ctp-subtext0
+		data-[roll='2']:text-ctp-text
+		data-[roll='3']:text-ctp-green
+		data-[roll='4']:text-ctp-blue
+		data-[roll='5']:text-ctp-mauve
+		data-[roll='6']:text-ctp-yellow
+		data-[roll='1']:[animation-delay:0ms]
+		data-[roll='2']:[animation-delay:25ms]
+		data-[roll='3']:[animation-delay:50ms]
+		data-[roll='4']:[animation-delay:75ms]
+		data-[roll='5']:[animation-delay:100ms]
+		data-[roll='6']:[animation-delay:125ms]
+		has-[input:checked]:ring
+		data-[roll='1']:has-[input:checked]:ring-ctp-subtext0
+		data-[roll='2']:has-[input:checked]:ring-ctp-text
+		data-[roll='3']:has-[input:checked]:ring-ctp-green
+		data-[roll='4']:has-[input:checked]:ring-ctp-blue
+		data-[roll='5']:has-[input:checked]:ring-ctp-mauve
+		data-[roll='6']:has-[input:checked]:ring-ctp-yellow
+		animate-diceRoll
+		shadow-lg
+		w-12 h-12 rounded-lg flex items-center justify-center
+		relative overflow-hidden
+		"
+	>
+		<div class="sheen pointer-events-none w-full h-[150%] absolute left-0 -top-3 opacity-0">
+			<div
+				class="
+				bg-gradient-to-r from-transparent to-transparent
+				group-data-[roll='1']:via-ctp-subtext0
+				group-data-[roll='2']:via-ctp-text
+				group-data-[roll='3']:via-ctp-green
+				group-data-[roll='4']:via-ctp-blue
+				group-data-[roll='5']:via-ctp-mauve
+				group-data-[roll='6']:via-ctp-yellow
+				group-data-[roll='1']:w-1
+				group-data-[roll='2']:w-2
+				group-data-[roll='3']:w-4
+				group-data-[roll='4']:w-8
+				group-data-[roll='5']:w-12
+				group-data-[roll='6']:w-16
+				h-full absolute left-1/2 -translate-x-1/2 -rotate-12"
+			></div>
+		</div>
+		<input type="checkbox" class="hidden"/>
+		{ strconv.Itoa(roll) }
+	</label>
+}
