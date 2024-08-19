@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
+	"go-dice/engine"
 	"go-dice/environment"
 	"go-dice/routes"
 	"net/http"
+	"os"
 
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
@@ -22,6 +25,15 @@ func (cv *CustomValidator) Validate(i interface{}) error {
 }
 
 func main() {
+	args := os.Args
+
+	if len(args) > 1 {
+		for _, arg := range args[1:] {
+			fmt.Println(engine.RollDice(arg))
+		}
+		return
+	}
+
 	e := echo.New()
 	e.Static("/", "static")
 
