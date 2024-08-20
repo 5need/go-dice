@@ -41,13 +41,12 @@ func NewParser(myLexer lexer.Lexer) *Parser {
 func (parser *Parser) Parse() ([]int, error) {
 	result, err := parser.roll()
 	if err != nil {
-		return []int{}, err
+		return result, err
 	}
 	for err == nil {
 		result, err = parser.modifier(result)
 	}
 
-	fmt.Println(result)
 	return result, nil
 }
 
@@ -114,6 +113,7 @@ func (parser *Parser) array() ([]int, error) {
 
 	// in case of empty array
 	if parser.currentToken.Type == lexer.TokenCloseBrackets {
+		parser.nextToken()
 		return []int{}, nil
 	}
 
@@ -147,20 +147,30 @@ func (parser *Parser) array() ([]int, error) {
 func (parser *Parser) modifier(result []int) ([]int, error) {
 	newResult, err := parser.add_roll(result)
 	if err == nil {
+		fmt.Println("add_roll")
+		fmt.Println(result)
+		fmt.Println(newResult)
+		fmt.Println()
 		return newResult, nil
 	}
 	newResult, err = parser.remove_roll(result)
 	if err == nil {
+		fmt.Println("remove_roll")
+		fmt.Println(result)
+		fmt.Println(newResult)
+		fmt.Println()
 		return newResult, nil
 	}
 	newResult, err = parser.reroll(result)
 	if err == nil {
+		fmt.Println("reroll")
+		fmt.Println(result)
+		fmt.Println(newResult)
+		fmt.Println()
 		return newResult, nil
 	}
-	return result, errors.New("Expected a modifier")
-	// parser.reroll()
 
-	// return []int{}, nil
+	return result, errors.New("Expected a modifier")
 }
 
 // add_roll ::= "+" roll
@@ -186,7 +196,6 @@ func (parser *Parser) remove_roll(result []int) ([]int, error) {
 	removeByIndex, err := parser.select_range()
 	if err == nil {
 		newResult := []int{}
-		fmt.Println(removeByIndex)
 		for _, value := range result {
 			amountToRemoveLeft := removeByIndex[value-1]
 			if amountToRemoveLeft != -1 {
@@ -287,13 +296,11 @@ func (parser *Parser) select_range() ([]int, error) {
 
 // reroll ::= "rr" select_range
 func (parser *Parser) reroll(result []int) ([]int, error) {
-	fmt.Println(result)
 	if parser.currentToken.Type != lexer.TokenReroll {
 		return result, errors.New("Expected a rr")
 	}
 	parser.nextToken()
 	rerollByIndex, err := parser.select_range()
-	fmt.Println(rerollByIndex)
 	if err == nil {
 		newResult := []int{}
 		for _, value := range result {
