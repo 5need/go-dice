@@ -37,12 +37,10 @@ func NewParser(myLexer lexer.Lexer) *Parser {
 	return parser
 }
 
-// program ::= roll { modifier }
+// program ::= modifier { modifier }
 func (parser *Parser) Parse() ([]int, error) {
-	result, err := parser.roll()
-	if err != nil {
-		return result, err
-	}
+	result := []int{}
+	var err error
 	for err == nil {
 		result, err = parser.modifier(result)
 	}
