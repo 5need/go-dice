@@ -17,6 +17,7 @@ const (
 	TokenCloseBrackets TokenType = "CLOSE_BRACKETS"
 	TokenComma         TokenType = "COMMA"
 	TokenReroll        TokenType = "REROLL"
+	TokenSave          TokenType = "SAVE"
 )
 
 type Token struct {
@@ -92,6 +93,8 @@ func (lexer *Lexer) NextToken() Token {
 				tok.Type = TokenPlural
 			case "rr":
 				tok.Type = TokenReroll
+			case "sv":
+				tok.Type = TokenSave
 			default:
 				tok.Type = TokenIdent
 			}
