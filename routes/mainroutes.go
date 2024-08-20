@@ -53,7 +53,7 @@ func ProductRoutes(e *echo.Echo) {
 			RollAmounts: rollAmounts,
 		}
 
-		views.Form(u.Input, "["+strings.Join(strNumbers, ",")+"]").Render(c.Request().Context(), c.Response().Writer)
+		views.Form(u.Input, "+["+strings.Join(strNumbers, ",")+"]").Render(c.Request().Context(), c.Response().Writer)
 		return views.DiceBox(rollStats).Render(c.Request().Context(), c.Response().Writer)
 	})
 }
