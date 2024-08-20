@@ -43,9 +43,12 @@ func (parser *Parser) Parse() ([]int, error) {
 	var err error
 	for err == nil {
 		result, err = parser.modifier(result)
+		if parser.currentToken.Type == lexer.TokenEOF {
+			break
+		}
 	}
 
-	return result, nil
+	return result, err
 }
 
 // roll ::= ( dice | array )
@@ -176,7 +179,11 @@ func (parser *Parser) modifier(result []int) ([]int, error) {
 		return newResult, nil
 	}
 
-	return result, errors.New("Expected a modifier")
+	if parser.currentToken.Type == lexer.TokenEOF {
+		return result, nil
+	} else {
+		return result, errors.New("Expected a modifier")
+	}
 }
 
 // add_roll ::= "+" roll
@@ -226,7 +233,6 @@ func (parser *Parser) save_roll(result []int) ([]int, error) {
 	parser.nextToken()
 
 	saveByIndex, err := parser.select_range()
-	fmt.Println(saveByIndex)
 	if err == nil {
 		newResult := []int{}
 		for _, value := range result {
