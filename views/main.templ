@@ -6,38 +6,58 @@ import (
 )
 
 templ Main() {
-	<div
-		_="
-		def animate()
-			if the length of .sheen > 0
-				then set x to random .sheen
-				then take .animate-diceShine for x
-				then add .animate-diceShine to x
-			end
-		end
-		init wait 1s
-		then repeat forever
-			animate()
-			then wait 2s
-		end
-		"
-		class="animate-diceShine hidden"
-	></div>
 	@Base("Go-Dice") {
-		@Form("", "")
+		<div
+			_="
+			def animate()
+				if the length of .sheen > 0
+					then set x to random .sheen
+					then take .animate-diceShine for x
+					then add .animate-diceShine to x
+				end
+			end
+			init wait 1s
+			then repeat forever
+				animate()
+				then wait 3s
+			end
+			"
+			class="animate-diceShine hidden"
+		></div>
 		@DiceBox(models.NewRollStats())
+		@Form("", "")
 	}
 }
 
 templ Form(input string, currentResult string) {
 	<form hx-post="/" hx-swap="outerHTML" class="[&_input]:bg-transparent flex flex-col">
+		<div class="flex flex-wrap gap-1">
+			<button
+				type="button"
+				_={ "on click set the value of #input to '-1+' then send submit to the closest <form/>" }
+				class="w-24 h-16 leading-none bg-ctp-surface0 rounded"
+			>clear</button>
+			@AddDiceButton("1")
+			@AddDiceButton("2")
+			@AddDiceButton("5")
+			@AddDiceButton("10")
+			@AddDiceButton("25")
+		</div>
 		<input id="input" name="input" value={ input }/>
 		<input id="currentResult" name="currentResult" value={ currentResult }/>
-		<div class="flex flex-wrap">
-			<button type="button" _="on click set the value of #input to '1d6' then send submit to the closest <form/>">+1d6</button>
-		</div>
 		<button>submit</button>
 	</form>
+}
+
+templ AddDiceButton(num string) {
+	<button
+		type="button"
+		_={ "on click set the value of #input to '+" + num + "d6' then send submit to the closest <form/>" }
+		class="w-24 h-16 leading-none bg-ctp-surface0 rounded"
+	>
+		{ num }x
+		<img src="/images/dice-d6.svg" class="w-4 invert inline"/>
+	</button>
 }
 
 templ DiceBox(rollStats models.RollStats) {
@@ -79,18 +99,12 @@ templ Dice(roll int) {
 		data-roll={ strconv.Itoa(roll) }
 		class="
 		group
-		data-[roll='1']:bg-ctp-subtext0/25
-		data-[roll='2']:bg-ctp-text/25
-		data-[roll='3']:bg-ctp-green/25
-		data-[roll='4']:bg-ctp-blue/25
-		data-[roll='5']:bg-ctp-mauve/25
-		data-[roll='6']:bg-ctp-yellow/25
-		data-[roll='1']:text-ctp-subtext0
-		data-[roll='2']:text-ctp-text
-		data-[roll='3']:text-ctp-green
-		data-[roll='4']:text-ctp-blue
-		data-[roll='5']:text-ctp-mauve
-		data-[roll='6']:text-ctp-yellow
+		data-[roll='1']:bg-ctp-subtext0
+		data-[roll='2']:bg-ctp-text
+		data-[roll='3']:bg-ctp-green
+		data-[roll='4']:bg-ctp-blue
+		data-[roll='5']:bg-ctp-mauve
+		data-[roll='6']:bg-ctp-yellow
 		data-[roll='1']:[animation-delay:0ms]
 		data-[roll='2']:[animation-delay:25ms]
 		data-[roll='3']:[animation-delay:50ms]
@@ -130,6 +144,21 @@ templ Dice(roll int) {
 			></div>
 		</div>
 		<input type="checkbox" class="hidden"/>
-		{ strconv.Itoa(roll) }
+		<div class="[&_img]:w-full [&_img]:h-full [&_img]:opacity-50">
+			switch roll {
+				case 1:
+					<img src="/images/dice-one.svg"/>
+				case 2:
+					<img src="/images/dice-two.svg"/>
+				case 3:
+					<img src="/images/dice-three.svg"/>
+				case 4:
+					<img src="/images/dice-four.svg"/>
+				case 5:
+					<img src="/images/dice-five.svg"/>
+				case 6:
+					<img src="/images/dice-six.svg"/>
+			}
+		</div>
 	</label>
 }
