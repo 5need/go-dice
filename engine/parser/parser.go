@@ -167,6 +167,14 @@ func (parser *Parser) modifier(result []int) ([]int, error) {
 		fmt.Println()
 		return newResult, nil
 	}
+	newResult, err = parser.save_roll(result)
+	if err == nil {
+		fmt.Println("save_roll")
+		fmt.Println(result)
+		fmt.Println(newResult)
+		fmt.Println()
+		return newResult, nil
+	}
 
 	return result, errors.New("Expected a modifier")
 }
@@ -202,6 +210,32 @@ func (parser *Parser) remove_roll(result []int) ([]int, error) {
 				} else {
 					newResult = append(newResult, value)
 				}
+			}
+		}
+		return newResult, nil
+	}
+
+	return result, nil
+}
+
+// save_roll ::= "sv" select_range
+func (parser *Parser) save_roll(result []int) ([]int, error) {
+	if parser.currentToken.Type != lexer.TokenSave {
+		return result, errors.New("Expected an sv")
+	}
+	parser.nextToken()
+
+	saveByIndex, err := parser.select_range()
+	fmt.Println(saveByIndex)
+	if err == nil {
+		newResult := []int{}
+		for _, value := range result {
+			amountToSaveLeft := saveByIndex[value-1]
+			if amountToSaveLeft == -1 {
+				newResult = append(newResult, value)
+			} else if amountToSaveLeft > 0 {
+				newResult = append(newResult, value)
+				saveByIndex[value-1]--
 			}
 		}
 		return newResult, nil
