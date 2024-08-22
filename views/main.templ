@@ -24,17 +24,17 @@ templ Main() {
 			"
 			class="animate-diceShine hidden"
 		></div>
-		@DiceBox(models.NewRollStats())
-		@Form("", "")
+		@Form(models.NewRollStats())
 	}
 }
 
-templ Form(input string, currentResult string) {
+templ Form(rollStats models.RollStats) {
 	<form hx-post="/" hx-swap="outerHTML" class="[&_input]:bg-transparent flex flex-col">
+		@DiceBox(rollStats)
 		<div class="flex flex-wrap gap-1">
 			<button
 				type="button"
-				_={ "on click set the value of #input to '-1+' then send submit to the closest <form/>" }
+				_="on click set the value of #input to '-1+' then send submit to the closest <form/>"
 				class="w-24 h-16 leading-none bg-ctp-surface0 rounded"
 			>clear</button>
 			@AddDiceButton("1")
@@ -42,9 +42,20 @@ templ Form(input string, currentResult string) {
 			@AddDiceButton("5")
 			@AddDiceButton("10")
 			@AddDiceButton("25")
+			<button
+				type="button"
+				_="
+				on click
+					repeat in <input[name=selection]/>
+						js(it) it.checked = !it.checked; end
+					end
+				end
+				"
+				class="w-24 h-16 leading-none bg-ctp-surface0 rounded"
+			>invert selection</button>
 		</div>
-		<input id="input" name="input" value={ input }/>
-		<input id="currentResult" name="currentResult" value={ currentResult }/>
+		<input id="input" name="input" value={ rollStats.PreviousInput }/>
+		<input id="currentResult" name="currentResult" value={ rollStats.CurrentRoll }/>
 		<button>submit</button>
 	</form>
 }
@@ -61,7 +72,12 @@ templ AddDiceButton(num string) {
 }
 
 templ DiceBox(rollStats models.RollStats) {
-	<ul id="diceBox" hx-swap-oob="outerHTML" class="flex flex-col overflow-x-auto">
+	<ul
+		id="diceBox"
+		class="flex flex-col overflow-x-auto
+		[&_div.counter]:[&_label:has(+_label_input:not(:checked)):has(input:checked)]:flex
+		"
+	>
 		for i := 5; i >= 0; i-- {
 			<li class="flex gap-2 py-4 min-w-max border-b border-ctp-surface0 last:border-none">
 				<button class="font-mono h-12 w-20 border-2 border-ctp-blue/10 flex items-center justify-center">
@@ -84,68 +100,153 @@ templ DiceBox(rollStats models.RollStats) {
 						-
 					}
 				</div>
-				for _, roll := range rollStats.Rolls {
-					if roll == i+1 {
-						@Dice(roll)
-					}
+				for j := 0; j < rollStats.RollAmounts[i]; j++ {
+					@Dice(i+1, j, Some(rollStats.Selection, func(n models.DiceIdentifier) bool {
+						return n == models.DiceIdentifier{RollValue: i + 1, FromTheLeft: j}
+					}))
 				}
 			</li>
 		}
 	</ul>
 }
 
-templ Dice(roll int) {
+func Some[T any](slice []T, predicate func(T) bool) bool {
+	for _, v := range slice {
+		if predicate(v) {
+			return true
+		}
+	}
+	return false
+}
+
+templ Dice(rollValue int, fromTheLeft int, checked bool) {
 	<label
-		data-roll={ strconv.Itoa(roll) }
+		data-rollValue={ strconv.Itoa(rollValue) }
 		class="
 		group
-		data-[roll='1']:bg-ctp-subtext0
-		data-[roll='2']:bg-ctp-text
-		data-[roll='3']:bg-ctp-green
-		data-[roll='4']:bg-ctp-blue
-		data-[roll='5']:bg-ctp-mauve
-		data-[roll='6']:bg-ctp-yellow
-		data-[roll='1']:[animation-delay:0ms]
-		data-[roll='2']:[animation-delay:25ms]
-		data-[roll='3']:[animation-delay:50ms]
-		data-[roll='4']:[animation-delay:75ms]
-		data-[roll='5']:[animation-delay:100ms]
-		data-[roll='6']:[animation-delay:125ms]
-		has-[input:checked]:ring
-		data-[roll='1']:has-[input:checked]:ring-ctp-subtext0
-		data-[roll='2']:has-[input:checked]:ring-ctp-text
-		data-[roll='3']:has-[input:checked]:ring-ctp-green
-		data-[roll='4']:has-[input:checked]:ring-ctp-blue
-		data-[roll='5']:has-[input:checked]:ring-ctp-mauve
-		data-[roll='6']:has-[input:checked]:ring-ctp-yellow
+		data-[rollValue='1']:bg-ctp-subtext0
+		data-[rollValue='2']:bg-ctp-text
+		data-[rollValue='3']:bg-ctp-green
+		data-[rollValue='4']:bg-ctp-blue
+		data-[rollValue='5']:bg-ctp-mauve
+		data-[rollValue='6']:bg-ctp-yellow
+		data-[rollValue='1']:[animation-delay:0ms]
+		data-[rollValue='2']:[animation-delay:25ms]
+		data-[rollValue='3']:[animation-delay:50ms]
+		data-[rollValue='4']:[animation-delay:75ms]
+		data-[rollValue='5']:[animation-delay:100ms]
+		data-[rollValue='6']:[animation-delay:125ms]
+		has-[input:checked]:outline
+		has-[input:checked]:outline-4
+		data-[rollValue='1']:has-[input:checked]:outline-ctp-subtext0
+		data-[rollValue='2']:has-[input:checked]:outline-ctp-text
+		data-[rollValue='3']:has-[input:checked]:outline-ctp-green
+		data-[rollValue='4']:has-[input:checked]:outline-ctp-blue
+		data-[rollValue='5']:has-[input:checked]:outline-ctp-mauve
+		data-[rollValue='6']:has-[input:checked]:outline-ctp-yellow
 		animate-diceRoll
 		shadow-lg
 		w-12 h-12 rounded-lg flex items-center justify-center
-		relative overflow-hidden
+		relative
+		[&_div.bg]:[&:has(input:checked)_+_label:has(input:checked)]:!opacity-100
+		[&_div.counter]:last-of-type:has-[input:checked]:flex
 		"
 	>
-		<div class="sheen pointer-events-none w-full h-[150%] absolute left-0 -top-3 opacity-0">
+		<input
+			data-rollValue={ strconv.Itoa(rollValue) }
+			data-fromTheLeft={ strconv.Itoa(fromTheLeft) }
+			name="selection"
+			checked?={ checked }
+			value={ strconv.Itoa(rollValue) + "@" + strconv.Itoa(fromTheLeft) }
+			type="checkbox"
+			class="hidden peer"
+			_="
+			def fillLeftClearRight()
+				set y to my @data-fromTheLeft
+				then set y to parseInt(y)
+				then repeat in <input/> in the closest <li/>
+					set x to it's @data-fromTheLeft
+					then set x to parseInt(x)
+					then if x < y
+						js(it) it.checked = true; end
+					end
+					then if x > y
+						js(it) it.checked = false; end
+					end
+				end
+			end
+
+			def clearAll()
+				repeat in <input/> in the closest <li/>
+					js(it) it.checked = false; end
+				end
+			end
+
+			on click
+				if my checked == true
+					fillLeftClearRight()
+				else
+					set isLast to true
+					then repeat in <input:checked/> in the closest <li/>
+						set x to it's @data-fromTheLeft
+						then set x to parseInt(x)
+						then set y to my @data-fromTheLeft
+						then set y to parseInt(y)
+						then if x > y
+							set isLast to false
+						end
+					end
+					then if isLast
+						clearAll()
+					else
+						halt the event
+						then fillLeftClearRight()
+					end
+				end
+			end
+			"
+		/>
+		<div class="absolute inset-0.5 rounded overflow-hidden">
+			<div class="sheen pointer-events-none w-full h-[150%] absolute left-0 -top-3 opacity-0 z-10">
+				<div
+					class="
+					bg-gradient-to-r from-transparent to-transparent
+					group-data-[rollValue='1']:via-ctp-subtext0
+					group-data-[rollValue='2']:via-ctp-text
+					group-data-[rollValue='3']:via-ctp-green
+					group-data-[rollValue='4']:via-ctp-blue
+					group-data-[rollValue='5']:via-ctp-mauve
+					group-data-[rollValue='6']:via-ctp-yellow
+					group-data-[rollValue='1']:w-1
+					group-data-[rollValue='2']:w-2
+					group-data-[rollValue='3']:w-4
+					group-data-[rollValue='4']:w-8
+					group-data-[rollValue='5']:w-12
+					group-data-[rollValue='6']:w-16
+					h-full absolute left-1/2 -translate-x-1/2 -rotate-12"
+				></div>
+			</div>
+		</div>
+		<div
+			class="counter pointer-events-none rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-mono
+			w-10 h-10 z-10 hidden items-center justify-center text-2xl bg-ctp-text text-ctp-crust border border-ctp-surface0 shadow"
+		>
+			{ strconv.Itoa(fromTheLeft+1) }
+		</div>
+		<div class="[&_img]:w-full [&_img]:h-full [&_img]:opacity-50">
 			<div
 				class="
-				bg-gradient-to-r from-transparent to-transparent
-				group-data-[roll='1']:via-ctp-subtext0
-				group-data-[roll='2']:via-ctp-text
-				group-data-[roll='3']:via-ctp-green
-				group-data-[roll='4']:via-ctp-blue
-				group-data-[roll='5']:via-ctp-mauve
-				group-data-[roll='6']:via-ctp-yellow
-				group-data-[roll='1']:w-1
-				group-data-[roll='2']:w-2
-				group-data-[roll='3']:w-4
-				group-data-[roll='4']:w-8
-				group-data-[roll='5']:w-12
-				group-data-[roll='6']:w-16
-				h-full absolute left-1/2 -translate-x-1/2 -rotate-12"
+				bg
+				group-data-[rollValue='1']:bg-ctp-subtext0
+				group-data-[rollValue='2']:bg-ctp-text
+				group-data-[rollValue='3']:bg-ctp-green
+				group-data-[rollValue='4']:bg-ctp-blue
+				group-data-[rollValue='5']:bg-ctp-mauve
+				group-data-[rollValue='6']:bg-ctp-yellow
+				absolute -inset-1 -z-10 -translate-x-1/2 bg-ctp-blue opacity-0
+				pointer-events-none"
 			></div>
-		</div>
-		<input type="checkbox" class="hidden"/>
-		<div class="[&_img]:w-full [&_img]:h-full [&_img]:opacity-50">
-			switch roll {
+			switch rollValue {
 				case 1:
 					<img src="/images/dice-one.svg"/>
 				case 2:

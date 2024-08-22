@@ -38,15 +38,7 @@ func Main() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = DiceBox(models.NewRollStats()).Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" ")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = Form("", "").Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = Form(models.NewRollStats()).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -66,7 +58,7 @@ func Main() templ.Component {
 	})
 }
 
-func Form(input string, currentResult string) templ.Component {
+func Form(rollStats models.RollStats) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -79,20 +71,15 @@ func Form(input string, currentResult string) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form hx-post=\"/\" hx-swap=\"outerHTML\" class=\"[&amp;_input]:bg-transparent flex flex-col\"><div class=\"flex flex-wrap gap-1\"><button type=\"button\" _=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form hx-post=\"/\" hx-swap=\"outerHTML\" class=\"[&amp;_input]:bg-transparent flex flex-col\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var4 string
-		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs("on click set the value of #input to '-1+' then send submit to the closest <form/>")
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 37, Col: 91}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+		templ_7745c5c3_Err = DiceBox(rollStats).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"w-24 h-16 leading-none bg-ctp-surface0 rounded\">clear</button>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex flex-wrap gap-1\"><button type=\"button\" _=\"on click set the value of #input to &#39;-1+&#39; then send submit to the closest &lt;form/&gt;\" class=\"w-24 h-16 leading-none bg-ctp-surface0 rounded\">clear</button>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -116,16 +103,16 @@ func Form(input string, currentResult string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><input id=\"input\" name=\"input\" value=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" _=\"\n\t\t\t\ton click\n\t\t\t\t\trepeat in &lt;input[name=selection]/&gt;\n\t\t\t\t\t\tjs(it) it.checked = !it.checked; end\n\t\t\t\t\tend\n\t\t\t\tend\n\t\t\t\t\" class=\"w-24 h-16 leading-none bg-ctp-surface0 rounded\">invert selection</button></div><input id=\"input\" name=\"input\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var5 string
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(input)
+		var templ_7745c5c3_Var4 string
+		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(rollStats.PreviousInput)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 46, Col: 46}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 57, Col: 64}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -133,12 +120,12 @@ func Form(input string, currentResult string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var6 string
-		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(currentResult)
+		var templ_7745c5c3_Var5 string
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(rollStats.CurrentRoll)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 47, Col: 70}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 58, Col: 78}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -161,21 +148,21 @@ func AddDiceButton(num string) templ.Component {
 			defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var7 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var7 == nil {
-			templ_7745c5c3_Var7 = templ.NopComponent
+		templ_7745c5c3_Var6 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var6 == nil {
+			templ_7745c5c3_Var6 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" _=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var8 string
-		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs("on click set the value of #input to '+" + num + "d6' then send submit to the closest <form/>")
+		var templ_7745c5c3_Var7 string
+		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs("on click set the value of #input to '+" + num + "d6' then send submit to the closest <form/>")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 55, Col: 100}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 66, Col: 100}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -183,12 +170,12 @@ func AddDiceButton(num string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var9 string
-		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(num)
+		var templ_7745c5c3_Var8 string
+		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(num)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 58, Col: 7}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 69, Col: 7}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -211,12 +198,12 @@ func DiceBox(rollStats models.RollStats) templ.Component {
 			defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var10 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var10 == nil {
-			templ_7745c5c3_Var10 = templ.NopComponent
+		templ_7745c5c3_Var9 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var9 == nil {
+			templ_7745c5c3_Var9 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<ul id=\"diceBox\" hx-swap-oob=\"outerHTML\" class=\"flex flex-col overflow-x-auto\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<ul id=\"diceBox\" class=\"flex flex-col overflow-x-auto\n\t\t[&amp;_div.counter]:[&amp;_label:has(+_label_input:not(:checked)):has(input:checked)]:flex\n\t\t\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -242,12 +229,12 @@ func DiceBox(rollStats models.RollStats) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			} else {
-				var templ_7745c5c3_Var11 string
-				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(i + 1))
+				var templ_7745c5c3_Var10 string
+				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(i + 1))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 77, Col: 25}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 93, Col: 25}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -261,12 +248,12 @@ func DiceBox(rollStats models.RollStats) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			if rollStats.RollAmounts[i] > 0 {
-				var templ_7745c5c3_Var12 string
-				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(rollStats.RollAmounts[i]))
+				var templ_7745c5c3_Var11 string
+				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(rollStats.RollAmounts[i]))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 82, Col: 46}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 98, Col: 46}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -284,12 +271,12 @@ func DiceBox(rollStats models.RollStats) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			for _, roll := range rollStats.Rolls {
-				if roll == i+1 {
-					templ_7745c5c3_Err = Dice(roll).Render(ctx, templ_7745c5c3_Buffer)
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
+			for j := 0; j < rollStats.RollAmounts[i]; j++ {
+				templ_7745c5c3_Err = Dice(i+1, j, Some(rollStats.Selection, func(n models.DiceIdentifier) bool {
+					return n == models.DiceIdentifier{RollValue: i + 1, FromTheLeft: j}
+				})).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
 				}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</li>")
@@ -308,7 +295,16 @@ func DiceBox(rollStats models.RollStats) templ.Component {
 	})
 }
 
-func Dice(roll int) templ.Component {
+func Some[T any](slice []T, predicate func(T) bool) bool {
+	for _, v := range slice {
+		if predicate(v) {
+			return true
+		}
+	}
+	return false
+}
+
+func Dice(rollValue int, fromTheLeft int, checked bool) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -316,29 +312,91 @@ func Dice(roll int) templ.Component {
 			defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var13 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var13 == nil {
-			templ_7745c5c3_Var13 = templ.NopComponent
+		templ_7745c5c3_Var12 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var12 == nil {
+			templ_7745c5c3_Var12 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<label data-roll=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<label data-rollValue=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var13 string
+		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(rollValue))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 124, Col: 42}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"\n\t\tgroup\n\t\tdata-[rollValue=&#39;1&#39;]:bg-ctp-subtext0\n\t\tdata-[rollValue=&#39;2&#39;]:bg-ctp-text\n\t\tdata-[rollValue=&#39;3&#39;]:bg-ctp-green\n\t\tdata-[rollValue=&#39;4&#39;]:bg-ctp-blue\n\t\tdata-[rollValue=&#39;5&#39;]:bg-ctp-mauve\n\t\tdata-[rollValue=&#39;6&#39;]:bg-ctp-yellow\n\t\tdata-[rollValue=&#39;1&#39;]:[animation-delay:0ms]\n\t\tdata-[rollValue=&#39;2&#39;]:[animation-delay:25ms]\n\t\tdata-[rollValue=&#39;3&#39;]:[animation-delay:50ms]\n\t\tdata-[rollValue=&#39;4&#39;]:[animation-delay:75ms]\n\t\tdata-[rollValue=&#39;5&#39;]:[animation-delay:100ms]\n\t\tdata-[rollValue=&#39;6&#39;]:[animation-delay:125ms]\n\t\thas-[input:checked]:outline\n\t\thas-[input:checked]:outline-4\n\t\tdata-[rollValue=&#39;1&#39;]:has-[input:checked]:outline-ctp-subtext0\n\t\tdata-[rollValue=&#39;2&#39;]:has-[input:checked]:outline-ctp-text\n\t\tdata-[rollValue=&#39;3&#39;]:has-[input:checked]:outline-ctp-green\n\t\tdata-[rollValue=&#39;4&#39;]:has-[input:checked]:outline-ctp-blue\n\t\tdata-[rollValue=&#39;5&#39;]:has-[input:checked]:outline-ctp-mauve\n\t\tdata-[rollValue=&#39;6&#39;]:has-[input:checked]:outline-ctp-yellow\n\t\tanimate-diceRoll\n\t\tshadow-lg\n\t\tw-12 h-12 rounded-lg flex items-center justify-center\n\t\trelative\n\t\t[&amp;_div.bg]:[&amp;:has(input:checked)_+_label:has(input:checked)]:!opacity-100\n\t\t[&amp;_div.counter]:last-of-type:has-[input:checked]:flex\n\t\t\"><input data-rollValue=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var14 string
-		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(roll))
+		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(rollValue))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 99, Col: 32}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 156, Col: 43}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"\n\t\tgroup\n\t\tdata-[roll=&#39;1&#39;]:bg-ctp-subtext0\n\t\tdata-[roll=&#39;2&#39;]:bg-ctp-text\n\t\tdata-[roll=&#39;3&#39;]:bg-ctp-green\n\t\tdata-[roll=&#39;4&#39;]:bg-ctp-blue\n\t\tdata-[roll=&#39;5&#39;]:bg-ctp-mauve\n\t\tdata-[roll=&#39;6&#39;]:bg-ctp-yellow\n\t\tdata-[roll=&#39;1&#39;]:[animation-delay:0ms]\n\t\tdata-[roll=&#39;2&#39;]:[animation-delay:25ms]\n\t\tdata-[roll=&#39;3&#39;]:[animation-delay:50ms]\n\t\tdata-[roll=&#39;4&#39;]:[animation-delay:75ms]\n\t\tdata-[roll=&#39;5&#39;]:[animation-delay:100ms]\n\t\tdata-[roll=&#39;6&#39;]:[animation-delay:125ms]\n\t\thas-[input:checked]:ring\n\t\tdata-[roll=&#39;1&#39;]:has-[input:checked]:ring-ctp-subtext0\n\t\tdata-[roll=&#39;2&#39;]:has-[input:checked]:ring-ctp-text\n\t\tdata-[roll=&#39;3&#39;]:has-[input:checked]:ring-ctp-green\n\t\tdata-[roll=&#39;4&#39;]:has-[input:checked]:ring-ctp-blue\n\t\tdata-[roll=&#39;5&#39;]:has-[input:checked]:ring-ctp-mauve\n\t\tdata-[roll=&#39;6&#39;]:has-[input:checked]:ring-ctp-yellow\n\t\tanimate-diceRoll\n\t\tshadow-lg\n\t\tw-12 h-12 rounded-lg flex items-center justify-center\n\t\trelative overflow-hidden\n\t\t\"><div class=\"sheen pointer-events-none w-full h-[150%] absolute left-0 -top-3 opacity-0\"><div class=\"\n\t\t\t\tbg-gradient-to-r from-transparent to-transparent\n\t\t\t\tgroup-data-[roll=&#39;1&#39;]:via-ctp-subtext0\n\t\t\t\tgroup-data-[roll=&#39;2&#39;]:via-ctp-text\n\t\t\t\tgroup-data-[roll=&#39;3&#39;]:via-ctp-green\n\t\t\t\tgroup-data-[roll=&#39;4&#39;]:via-ctp-blue\n\t\t\t\tgroup-data-[roll=&#39;5&#39;]:via-ctp-mauve\n\t\t\t\tgroup-data-[roll=&#39;6&#39;]:via-ctp-yellow\n\t\t\t\tgroup-data-[roll=&#39;1&#39;]:w-1\n\t\t\t\tgroup-data-[roll=&#39;2&#39;]:w-2\n\t\t\t\tgroup-data-[roll=&#39;3&#39;]:w-4\n\t\t\t\tgroup-data-[roll=&#39;4&#39;]:w-8\n\t\t\t\tgroup-data-[roll=&#39;5&#39;]:w-12\n\t\t\t\tgroup-data-[roll=&#39;6&#39;]:w-16\n\t\t\t\th-full absolute left-1/2 -translate-x-1/2 -rotate-12\"></div></div><input type=\"checkbox\" class=\"hidden\"><div class=\"[&amp;_img]:w-full [&amp;_img]:h-full [&amp;_img]:opacity-50\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" data-fromTheLeft=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		switch roll {
+		var templ_7745c5c3_Var15 string
+		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(fromTheLeft))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 157, Col: 47}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" name=\"selection\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if checked {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" checked")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" value=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var16 string
+		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(rollValue) + "@" + strconv.Itoa(fromTheLeft))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 160, Col: 68}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" type=\"checkbox\" class=\"hidden peer\" _=\"\n\t\t\tdef fillLeftClearRight()\n\t\t\t\tset y to my @data-fromTheLeft\n\t\t\t\tthen set y to parseInt(y)\n\t\t\t\tthen repeat in &lt;input/&gt; in the closest &lt;li/&gt;\n\t\t\t\t\tset x to it&#39;s @data-fromTheLeft\n\t\t\t\t\tthen set x to parseInt(x)\n\t\t\t\t\tthen if x &lt; y\n\t\t\t\t\t\tjs(it) it.checked = true; end\n\t\t\t\t\tend\n\t\t\t\t\tthen if x &gt; y\n\t\t\t\t\t\tjs(it) it.checked = false; end\n\t\t\t\t\tend\n\t\t\t\tend\n\t\t\tend\n\n\t\t\tdef clearAll()\n\t\t\t\trepeat in &lt;input/&gt; in the closest &lt;li/&gt;\n\t\t\t\t\tjs(it) it.checked = false; end\n\t\t\t\tend\n\t\t\tend\n\n\t\t\ton click\n\t\t\t\tif my checked == true\n\t\t\t\t\tfillLeftClearRight()\n\t\t\t\telse\n\t\t\t\t\tset isLast to true\n\t\t\t\t\tthen repeat in &lt;input:checked/&gt; in the closest &lt;li/&gt;\n\t\t\t\t\t\tset x to it&#39;s @data-fromTheLeft\n\t\t\t\t\t\tthen set x to parseInt(x)\n\t\t\t\t\t\tthen set y to my @data-fromTheLeft\n\t\t\t\t\t\tthen set y to parseInt(y)\n\t\t\t\t\t\tthen if x &gt; y\n\t\t\t\t\t\t\tset isLast to false\n\t\t\t\t\t\tend\n\t\t\t\t\tend\n\t\t\t\t\tthen if isLast\n\t\t\t\t\t\tclearAll()\n\t\t\t\t\telse\n\t\t\t\t\t\thalt the event\n\t\t\t\t\t\tthen fillLeftClearRight()\n\t\t\t\t\tend\n\t\t\t\tend\n\t\t\tend\n\t\t\t\"><div class=\"absolute inset-0.5 rounded overflow-hidden\"><div class=\"sheen pointer-events-none w-full h-[150%] absolute left-0 -top-3 opacity-0 z-10\"><div class=\"\n\t\t\t\t\tbg-gradient-to-r from-transparent to-transparent\n\t\t\t\t\tgroup-data-[rollValue=&#39;1&#39;]:via-ctp-subtext0\n\t\t\t\t\tgroup-data-[rollValue=&#39;2&#39;]:via-ctp-text\n\t\t\t\t\tgroup-data-[rollValue=&#39;3&#39;]:via-ctp-green\n\t\t\t\t\tgroup-data-[rollValue=&#39;4&#39;]:via-ctp-blue\n\t\t\t\t\tgroup-data-[rollValue=&#39;5&#39;]:via-ctp-mauve\n\t\t\t\t\tgroup-data-[rollValue=&#39;6&#39;]:via-ctp-yellow\n\t\t\t\t\tgroup-data-[rollValue=&#39;1&#39;]:w-1\n\t\t\t\t\tgroup-data-[rollValue=&#39;2&#39;]:w-2\n\t\t\t\t\tgroup-data-[rollValue=&#39;3&#39;]:w-4\n\t\t\t\t\tgroup-data-[rollValue=&#39;4&#39;]:w-8\n\t\t\t\t\tgroup-data-[rollValue=&#39;5&#39;]:w-12\n\t\t\t\t\tgroup-data-[rollValue=&#39;6&#39;]:w-16\n\t\t\t\t\th-full absolute left-1/2 -translate-x-1/2 -rotate-12\"></div></div></div><div class=\"counter pointer-events-none rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-mono\n\t\t\tw-10 h-10 z-10 hidden items-center justify-center text-2xl bg-ctp-text text-ctp-crust border border-ctp-surface0 shadow\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var17 string
+		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(fromTheLeft + 1))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 234, Col: 32}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"[&amp;_img]:w-full [&amp;_img]:h-full [&amp;_img]:opacity-50\"><div class=\"\n\t\t\t\tbg\n\t\t\t\tgroup-data-[rollValue=&#39;1&#39;]:bg-ctp-subtext0\n\t\t\t\tgroup-data-[rollValue=&#39;2&#39;]:bg-ctp-text\n\t\t\t\tgroup-data-[rollValue=&#39;3&#39;]:bg-ctp-green\n\t\t\t\tgroup-data-[rollValue=&#39;4&#39;]:bg-ctp-blue\n\t\t\t\tgroup-data-[rollValue=&#39;5&#39;]:bg-ctp-mauve\n\t\t\t\tgroup-data-[rollValue=&#39;6&#39;]:bg-ctp-yellow\n\t\t\t\tabsolute -inset-1 -z-10 -translate-x-1/2 bg-ctp-blue opacity-0\n\t\t\t\tpointer-events-none\"></div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		switch rollValue {
 		case 1:
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<img src=\"/images/dice-one.svg\">")
 			if templ_7745c5c3_Err != nil {
