@@ -18,8 +18,9 @@ func ProductRoutes(e *echo.Echo) {
 	})
 	e.POST("/", func(c echo.Context) error {
 		type PostRequest struct {
-			Input         string `form:"input"`
-			CurrentResult string `form:"currentResult"`
+			Input         string   `form:"input"`
+			CurrentResult string   `form:"currentResult"`
+			Selection     []string `form:"selection"`
 		}
 
 		u := new(PostRequest)
@@ -31,6 +32,23 @@ func ProductRoutes(e *echo.Echo) {
 		if err := c.Validate(u); err != nil {
 			fmt.Println("failed to validate")
 			return c.NoContent(http.StatusBadRequest)
+		}
+
+		selectedDice := []models.DiceIdentifier{}
+
+		for _, thing := range u.Selection {
+			parts := strings.Split(thing, "@")
+
+			leftValue, err1 := strconv.Atoi(parts[0])
+			rightValue, err2 := strconv.Atoi(parts[1])
+			if err1 != nil || err2 != nil {
+				panic("oops")
+			}
+
+			selectedDice = append(selectedDice, models.DiceIdentifier{
+				RollValue:   leftValue,
+				FromTheLeft: rightValue,
+			})
 		}
 
 		rawOutput, err := engine.RollDice(u.CurrentResult + u.Input)
@@ -49,11 +67,13 @@ func ProductRoutes(e *echo.Echo) {
 		}
 
 		rollStats := models.RollStats{
-			Rolls:       rawOutput,
-			RollAmounts: rollAmounts,
+			Rolls:         rawOutput,
+			RollAmounts:   rollAmounts,
+			PreviousInput: u.Input,
+			CurrentRoll:   "+[" + strings.Join(strNumbers, ",") + "]",
+			Selection:     selectedDice,
 		}
 
-		views.Form(u.Input, "+["+strings.Join(strNumbers, ",")+"]").Render(c.Request().Context(), c.Response().Writer)
-		return views.DiceBox(rollStats).Render(c.Request().Context(), c.Response().Writer)
+		return views.Form(rollStats).Render(c.Request().Context(), c.Response().Writer)
 	})
 }
