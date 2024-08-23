@@ -72,14 +72,9 @@ templ AddDiceButton(num string) {
 }
 
 templ DiceBox(rollStats models.RollStats) {
-	<ul
-		id="diceBox"
-		class="flex flex-col overflow-x-auto
-		[&_div.counter]:[&_label:has(+_label_input:not(:checked)):has(input:checked)]:flex
-		"
-	>
+	<ul id="diceBox" class="flex flex-col overflow-x-auto select-none">
 		for i := 5; i >= 0; i-- {
-			<li class="flex gap-2 py-4 min-w-max border-b border-ctp-surface0 last:border-none">
+			<li class="flex h-20 items-center min-w-max border-b border-ctp-surface0 last:border-none">
 				<button class="font-mono h-12 w-20 border-2 border-ctp-blue/10 flex items-center justify-center">
 					<img src="images/16/solid/arrow-path.svg" class="inline-block invert"/>
 					if i+1 != 1 {
@@ -124,32 +119,26 @@ templ Dice(rollValue int, fromTheLeft int, checked bool) {
 		data-rollValue={ strconv.Itoa(rollValue) }
 		class="
 		group
-		data-[rollValue='1']:bg-ctp-subtext0
-		data-[rollValue='2']:bg-ctp-text
-		data-[rollValue='3']:bg-ctp-green
-		data-[rollValue='4']:bg-ctp-blue
-		data-[rollValue='5']:bg-ctp-mauve
-		data-[rollValue='6']:bg-ctp-yellow
 		data-[rollValue='1']:[animation-delay:0ms]
 		data-[rollValue='2']:[animation-delay:25ms]
 		data-[rollValue='3']:[animation-delay:50ms]
 		data-[rollValue='4']:[animation-delay:75ms]
 		data-[rollValue='5']:[animation-delay:100ms]
 		data-[rollValue='6']:[animation-delay:125ms]
-		has-[input:checked]:outline
-		has-[input:checked]:outline-4
-		data-[rollValue='1']:has-[input:checked]:outline-ctp-subtext0
-		data-[rollValue='2']:has-[input:checked]:outline-ctp-text
-		data-[rollValue='3']:has-[input:checked]:outline-ctp-green
-		data-[rollValue='4']:has-[input:checked]:outline-ctp-blue
-		data-[rollValue='5']:has-[input:checked]:outline-ctp-mauve
-		data-[rollValue='6']:has-[input:checked]:outline-ctp-yellow
-		animate-diceRoll
-		shadow-lg
-		w-12 h-12 rounded-lg flex items-center justify-center
+		border-4
+		border-transparent
+		h-20 flex items-center justify-center
 		relative
 		[&_div.bg]:[&:has(input:checked)_+_label:has(input:checked)]:!opacity-100
 		[&_div.counter]:last-of-type:has-[input:checked]:flex
+		[&_div.counter]:[&:has(+_label_input:not(:checked)):has(input:checked)]:flex
+		"
+		_="
+		on dblclick 
+			repeat in <input/> in the closest <li/>
+				set it's checked to true
+			end
+		end
 		"
 	>
 		<input
@@ -206,34 +195,20 @@ templ Dice(rollValue int, fromTheLeft int, checked bool) {
 			end
 			"
 		/>
-		<div class="absolute inset-0.5 rounded overflow-hidden">
-			<div class="sheen pointer-events-none w-full h-[150%] absolute left-0 -top-3 opacity-0 z-10">
-				<div
-					class="
-					bg-gradient-to-r from-transparent to-transparent
-					group-data-[rollValue='1']:via-ctp-subtext0
-					group-data-[rollValue='2']:via-ctp-text
-					group-data-[rollValue='3']:via-ctp-green
-					group-data-[rollValue='4']:via-ctp-blue
-					group-data-[rollValue='5']:via-ctp-mauve
-					group-data-[rollValue='6']:via-ctp-yellow
-					group-data-[rollValue='1']:w-1
-					group-data-[rollValue='2']:w-2
-					group-data-[rollValue='3']:w-4
-					group-data-[rollValue='4']:w-8
-					group-data-[rollValue='5']:w-12
-					group-data-[rollValue='6']:w-16
-					h-full absolute left-1/2 -translate-x-1/2 -rotate-12"
-				></div>
-			</div>
-		</div>
 		<div
-			class="counter pointer-events-none rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-mono
-			w-10 h-10 z-10 hidden items-center justify-center text-2xl bg-ctp-text text-ctp-crust border border-ctp-surface0 shadow"
+			class="[&_img]:w-full [&_img]:h-full [&_img]:opacity-75 peer-checked:[&_img]:opacity-10
+			w-12 h-12 rounded-lg pointer-events-none
+			group-data-[rollValue='1']:bg-ctp-subtext0
+			group-data-[rollValue='2']:bg-ctp-text
+			group-data-[rollValue='3']:bg-ctp-green
+			group-data-[rollValue='4']:bg-ctp-blue
+			group-data-[rollValue='5']:bg-ctp-mauve
+			group-data-[rollValue='6']:bg-ctp-yellow
+			relative
+			"
 		>
-			{ strconv.Itoa(fromTheLeft+1) }
-		</div>
-		<div class="[&_img]:w-full [&_img]:h-full [&_img]:opacity-50">
+			@DiceSheen()
+			@DiceSelectionCurrentCount(fromTheLeft + 1)
 			<div
 				class="
 				bg
@@ -243,7 +218,7 @@ templ Dice(rollValue int, fromTheLeft int, checked bool) {
 				group-data-[rollValue='4']:bg-ctp-blue
 				group-data-[rollValue='5']:bg-ctp-mauve
 				group-data-[rollValue='6']:bg-ctp-yellow
-				absolute -inset-1 -z-10 -translate-x-1/2 bg-ctp-blue opacity-0
+				absolute inset-0 -z-10 -translate-x-1/2 bg-ctp-blue opacity-0
 				pointer-events-none"
 			></div>
 			switch rollValue {
@@ -262,4 +237,43 @@ templ Dice(rollValue int, fromTheLeft int, checked bool) {
 			}
 		</div>
 	</label>
+}
+
+templ DiceSelectionCurrentCount(num int) {
+	<div
+		class="
+		counter pointer-events-none rounded-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-mono
+		w-12 h-12 z-10 hidden items-center justify-center text-ctp-crust
+		group-hover:bg-white
+		group-hover:flex
+		text-2xl
+		group-hover:text-xl
+		"
+	>
+		{ strconv.Itoa(num) }x
+	</div>
+}
+
+templ DiceSheen() {
+	<div class="absolute inset-0.5 rounded overflow-hidden">
+		<div class="sheen pointer-events-none w-full h-[150%] absolute left-0 -top-3 opacity-0 z-10">
+			<div
+				class="
+					bg-gradient-to-r from-transparent to-transparent
+					group-data-[rollValue='1']:via-ctp-subtext0
+					group-data-[rollValue='2']:via-ctp-text
+					group-data-[rollValue='3']:via-ctp-green
+					group-data-[rollValue='4']:via-ctp-blue
+					group-data-[rollValue='5']:via-ctp-mauve
+					group-data-[rollValue='6']:via-ctp-yellow
+					group-data-[rollValue='1']:w-1
+					group-data-[rollValue='2']:w-2
+					group-data-[rollValue='3']:w-4
+					group-data-[rollValue='4']:w-8
+					group-data-[rollValue='5']:w-12
+					group-data-[rollValue='6']:w-16
+					h-full absolute left-1/2 -translate-x-1/2 -rotate-12"
+			></div>
+		</div>
+	</div>
 }

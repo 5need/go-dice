@@ -203,12 +203,12 @@ func DiceBox(rollStats models.RollStats) templ.Component {
 			templ_7745c5c3_Var9 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<ul id=\"diceBox\" class=\"flex flex-col overflow-x-auto\n\t\t[&amp;_div.counter]:[&amp;_label:has(+_label_input:not(:checked)):has(input:checked)]:flex\n\t\t\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<ul id=\"diceBox\" class=\"flex flex-col overflow-x-auto select-none\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		for i := 5; i >= 0; i-- {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<li class=\"flex gap-2 py-4 min-w-max border-b border-ctp-surface0 last:border-none\"><button class=\"font-mono h-12 w-20 border-2 border-ctp-blue/10 flex items-center justify-center\"><img src=\"images/16/solid/arrow-path.svg\" class=\"inline-block invert\"> ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<li class=\"flex h-20 items-center min-w-max border-b border-ctp-surface0 last:border-none\"><button class=\"font-mono h-12 w-20 border-2 border-ctp-blue/10 flex items-center justify-center\"><img src=\"images/16/solid/arrow-path.svg\" class=\"inline-block invert\"> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -232,7 +232,7 @@ func DiceBox(rollStats models.RollStats) templ.Component {
 				var templ_7745c5c3_Var10 string
 				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(i + 1))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 93, Col: 25}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 88, Col: 25}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 				if templ_7745c5c3_Err != nil {
@@ -251,7 +251,7 @@ func DiceBox(rollStats models.RollStats) templ.Component {
 				var templ_7745c5c3_Var11 string
 				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(rollStats.RollAmounts[i]))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 98, Col: 46}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 93, Col: 46}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 				if templ_7745c5c3_Err != nil {
@@ -324,20 +324,20 @@ func Dice(rollValue int, fromTheLeft int, checked bool) templ.Component {
 		var templ_7745c5c3_Var13 string
 		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(rollValue))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 124, Col: 42}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 119, Col: 42}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"\n\t\tgroup\n\t\tdata-[rollValue=&#39;1&#39;]:bg-ctp-subtext0\n\t\tdata-[rollValue=&#39;2&#39;]:bg-ctp-text\n\t\tdata-[rollValue=&#39;3&#39;]:bg-ctp-green\n\t\tdata-[rollValue=&#39;4&#39;]:bg-ctp-blue\n\t\tdata-[rollValue=&#39;5&#39;]:bg-ctp-mauve\n\t\tdata-[rollValue=&#39;6&#39;]:bg-ctp-yellow\n\t\tdata-[rollValue=&#39;1&#39;]:[animation-delay:0ms]\n\t\tdata-[rollValue=&#39;2&#39;]:[animation-delay:25ms]\n\t\tdata-[rollValue=&#39;3&#39;]:[animation-delay:50ms]\n\t\tdata-[rollValue=&#39;4&#39;]:[animation-delay:75ms]\n\t\tdata-[rollValue=&#39;5&#39;]:[animation-delay:100ms]\n\t\tdata-[rollValue=&#39;6&#39;]:[animation-delay:125ms]\n\t\thas-[input:checked]:outline\n\t\thas-[input:checked]:outline-4\n\t\tdata-[rollValue=&#39;1&#39;]:has-[input:checked]:outline-ctp-subtext0\n\t\tdata-[rollValue=&#39;2&#39;]:has-[input:checked]:outline-ctp-text\n\t\tdata-[rollValue=&#39;3&#39;]:has-[input:checked]:outline-ctp-green\n\t\tdata-[rollValue=&#39;4&#39;]:has-[input:checked]:outline-ctp-blue\n\t\tdata-[rollValue=&#39;5&#39;]:has-[input:checked]:outline-ctp-mauve\n\t\tdata-[rollValue=&#39;6&#39;]:has-[input:checked]:outline-ctp-yellow\n\t\tanimate-diceRoll\n\t\tshadow-lg\n\t\tw-12 h-12 rounded-lg flex items-center justify-center\n\t\trelative\n\t\t[&amp;_div.bg]:[&amp;:has(input:checked)_+_label:has(input:checked)]:!opacity-100\n\t\t[&amp;_div.counter]:last-of-type:has-[input:checked]:flex\n\t\t\"><input data-rollValue=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"\n\t\tgroup\n\t\tdata-[rollValue=&#39;1&#39;]:[animation-delay:0ms]\n\t\tdata-[rollValue=&#39;2&#39;]:[animation-delay:25ms]\n\t\tdata-[rollValue=&#39;3&#39;]:[animation-delay:50ms]\n\t\tdata-[rollValue=&#39;4&#39;]:[animation-delay:75ms]\n\t\tdata-[rollValue=&#39;5&#39;]:[animation-delay:100ms]\n\t\tdata-[rollValue=&#39;6&#39;]:[animation-delay:125ms]\n\t\tborder-4\n\t\tborder-transparent\n\t\th-20 flex items-center justify-center\n\t\trelative\n\t\t[&amp;_div.bg]:[&amp;:has(input:checked)_+_label:has(input:checked)]:!opacity-100\n\t\t[&amp;_div.counter]:last-of-type:has-[input:checked]:flex\n\t\t[&amp;_div.counter]:[&amp;:has(+_label_input:not(:checked)):has(input:checked)]:flex\n\t\t\" _=\"\n\t\ton dblclick \n\t\t\trepeat in &lt;input/&gt; in the closest &lt;li/&gt;\n\t\t\t\tset it&#39;s checked to true\n\t\t\tend\n\t\tend\n\t\t\"><input data-rollValue=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var14 string
 		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(rollValue))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 156, Col: 43}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 145, Col: 43}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 		if templ_7745c5c3_Err != nil {
@@ -350,7 +350,7 @@ func Dice(rollValue int, fromTheLeft int, checked bool) templ.Component {
 		var templ_7745c5c3_Var15 string
 		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(fromTheLeft))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 157, Col: 47}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 146, Col: 47}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 		if templ_7745c5c3_Err != nil {
@@ -373,26 +373,25 @@ func Dice(rollValue int, fromTheLeft int, checked bool) templ.Component {
 		var templ_7745c5c3_Var16 string
 		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(rollValue) + "@" + strconv.Itoa(fromTheLeft))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 160, Col: 68}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 149, Col: 68}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" type=\"checkbox\" class=\"hidden peer\" _=\"\n\t\t\tdef fillLeftClearRight()\n\t\t\t\tset y to my @data-fromTheLeft\n\t\t\t\tthen set y to parseInt(y)\n\t\t\t\tthen repeat in &lt;input/&gt; in the closest &lt;li/&gt;\n\t\t\t\t\tset x to it&#39;s @data-fromTheLeft\n\t\t\t\t\tthen set x to parseInt(x)\n\t\t\t\t\tthen if x &lt; y\n\t\t\t\t\t\tjs(it) it.checked = true; end\n\t\t\t\t\tend\n\t\t\t\t\tthen if x &gt; y\n\t\t\t\t\t\tjs(it) it.checked = false; end\n\t\t\t\t\tend\n\t\t\t\tend\n\t\t\tend\n\n\t\t\tdef clearAll()\n\t\t\t\trepeat in &lt;input/&gt; in the closest &lt;li/&gt;\n\t\t\t\t\tjs(it) it.checked = false; end\n\t\t\t\tend\n\t\t\tend\n\n\t\t\ton click\n\t\t\t\tif my checked == true\n\t\t\t\t\tfillLeftClearRight()\n\t\t\t\telse\n\t\t\t\t\tset isLast to true\n\t\t\t\t\tthen repeat in &lt;input:checked/&gt; in the closest &lt;li/&gt;\n\t\t\t\t\t\tset x to it&#39;s @data-fromTheLeft\n\t\t\t\t\t\tthen set x to parseInt(x)\n\t\t\t\t\t\tthen set y to my @data-fromTheLeft\n\t\t\t\t\t\tthen set y to parseInt(y)\n\t\t\t\t\t\tthen if x &gt; y\n\t\t\t\t\t\t\tset isLast to false\n\t\t\t\t\t\tend\n\t\t\t\t\tend\n\t\t\t\t\tthen if isLast\n\t\t\t\t\t\tclearAll()\n\t\t\t\t\telse\n\t\t\t\t\t\thalt the event\n\t\t\t\t\t\tthen fillLeftClearRight()\n\t\t\t\t\tend\n\t\t\t\tend\n\t\t\tend\n\t\t\t\"><div class=\"absolute inset-0.5 rounded overflow-hidden\"><div class=\"sheen pointer-events-none w-full h-[150%] absolute left-0 -top-3 opacity-0 z-10\"><div class=\"\n\t\t\t\t\tbg-gradient-to-r from-transparent to-transparent\n\t\t\t\t\tgroup-data-[rollValue=&#39;1&#39;]:via-ctp-subtext0\n\t\t\t\t\tgroup-data-[rollValue=&#39;2&#39;]:via-ctp-text\n\t\t\t\t\tgroup-data-[rollValue=&#39;3&#39;]:via-ctp-green\n\t\t\t\t\tgroup-data-[rollValue=&#39;4&#39;]:via-ctp-blue\n\t\t\t\t\tgroup-data-[rollValue=&#39;5&#39;]:via-ctp-mauve\n\t\t\t\t\tgroup-data-[rollValue=&#39;6&#39;]:via-ctp-yellow\n\t\t\t\t\tgroup-data-[rollValue=&#39;1&#39;]:w-1\n\t\t\t\t\tgroup-data-[rollValue=&#39;2&#39;]:w-2\n\t\t\t\t\tgroup-data-[rollValue=&#39;3&#39;]:w-4\n\t\t\t\t\tgroup-data-[rollValue=&#39;4&#39;]:w-8\n\t\t\t\t\tgroup-data-[rollValue=&#39;5&#39;]:w-12\n\t\t\t\t\tgroup-data-[rollValue=&#39;6&#39;]:w-16\n\t\t\t\t\th-full absolute left-1/2 -translate-x-1/2 -rotate-12\"></div></div></div><div class=\"counter pointer-events-none rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-mono\n\t\t\tw-10 h-10 z-10 hidden items-center justify-center text-2xl bg-ctp-text text-ctp-crust border border-ctp-surface0 shadow\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" type=\"checkbox\" class=\"hidden peer\" _=\"\n\t\t\tdef fillLeftClearRight()\n\t\t\t\tset y to my @data-fromTheLeft\n\t\t\t\tthen set y to parseInt(y)\n\t\t\t\tthen repeat in &lt;input/&gt; in the closest &lt;li/&gt;\n\t\t\t\t\tset x to it&#39;s @data-fromTheLeft\n\t\t\t\t\tthen set x to parseInt(x)\n\t\t\t\t\tthen if x &lt; y\n\t\t\t\t\t\tjs(it) it.checked = true; end\n\t\t\t\t\tend\n\t\t\t\t\tthen if x &gt; y\n\t\t\t\t\t\tjs(it) it.checked = false; end\n\t\t\t\t\tend\n\t\t\t\tend\n\t\t\tend\n\n\t\t\tdef clearAll()\n\t\t\t\trepeat in &lt;input/&gt; in the closest &lt;li/&gt;\n\t\t\t\t\tjs(it) it.checked = false; end\n\t\t\t\tend\n\t\t\tend\n\n\t\t\ton click\n\t\t\t\tif my checked == true\n\t\t\t\t\tfillLeftClearRight()\n\t\t\t\telse\n\t\t\t\t\tset isLast to true\n\t\t\t\t\tthen repeat in &lt;input:checked/&gt; in the closest &lt;li/&gt;\n\t\t\t\t\t\tset x to it&#39;s @data-fromTheLeft\n\t\t\t\t\t\tthen set x to parseInt(x)\n\t\t\t\t\t\tthen set y to my @data-fromTheLeft\n\t\t\t\t\t\tthen set y to parseInt(y)\n\t\t\t\t\t\tthen if x &gt; y\n\t\t\t\t\t\t\tset isLast to false\n\t\t\t\t\t\tend\n\t\t\t\t\tend\n\t\t\t\t\tthen if isLast\n\t\t\t\t\t\tclearAll()\n\t\t\t\t\telse\n\t\t\t\t\t\thalt the event\n\t\t\t\t\t\tthen fillLeftClearRight()\n\t\t\t\t\tend\n\t\t\t\tend\n\t\t\tend\n\t\t\t\"><div class=\"[&amp;_img]:w-full [&amp;_img]:h-full [&amp;_img]:opacity-75 peer-checked:[&amp;_img]:opacity-10\n\t\t\tw-12 h-12 rounded-lg pointer-events-none\n\t\t\tgroup-data-[rollValue=&#39;1&#39;]:bg-ctp-subtext0\n\t\t\tgroup-data-[rollValue=&#39;2&#39;]:bg-ctp-text\n\t\t\tgroup-data-[rollValue=&#39;3&#39;]:bg-ctp-green\n\t\t\tgroup-data-[rollValue=&#39;4&#39;]:bg-ctp-blue\n\t\t\tgroup-data-[rollValue=&#39;5&#39;]:bg-ctp-mauve\n\t\t\tgroup-data-[rollValue=&#39;6&#39;]:bg-ctp-yellow\n\t\t\trelative\n\t\t\t\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var17 string
-		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(fromTheLeft + 1))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 234, Col: 32}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
+		templ_7745c5c3_Err = DiceSheen().Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"[&amp;_img]:w-full [&amp;_img]:h-full [&amp;_img]:opacity-50\"><div class=\"\n\t\t\t\tbg\n\t\t\t\tgroup-data-[rollValue=&#39;1&#39;]:bg-ctp-subtext0\n\t\t\t\tgroup-data-[rollValue=&#39;2&#39;]:bg-ctp-text\n\t\t\t\tgroup-data-[rollValue=&#39;3&#39;]:bg-ctp-green\n\t\t\t\tgroup-data-[rollValue=&#39;4&#39;]:bg-ctp-blue\n\t\t\t\tgroup-data-[rollValue=&#39;5&#39;]:bg-ctp-mauve\n\t\t\t\tgroup-data-[rollValue=&#39;6&#39;]:bg-ctp-yellow\n\t\t\t\tabsolute -inset-1 -z-10 -translate-x-1/2 bg-ctp-blue opacity-0\n\t\t\t\tpointer-events-none\"></div>")
+		templ_7745c5c3_Err = DiceSelectionCurrentCount(fromTheLeft+1).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"\n\t\t\t\tbg\n\t\t\t\tgroup-data-[rollValue=&#39;1&#39;]:bg-ctp-subtext0\n\t\t\t\tgroup-data-[rollValue=&#39;2&#39;]:bg-ctp-text\n\t\t\t\tgroup-data-[rollValue=&#39;3&#39;]:bg-ctp-green\n\t\t\t\tgroup-data-[rollValue=&#39;4&#39;]:bg-ctp-blue\n\t\t\t\tgroup-data-[rollValue=&#39;5&#39;]:bg-ctp-mauve\n\t\t\t\tgroup-data-[rollValue=&#39;6&#39;]:bg-ctp-yellow\n\t\t\t\tabsolute inset-0 -z-10 -translate-x-1/2 bg-ctp-blue opacity-0\n\t\t\t\tpointer-events-none\"></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -429,6 +428,67 @@ func Dice(rollValue int, fromTheLeft int, checked bool) templ.Component {
 			}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></label>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if !templ_7745c5c3_IsBuffer {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteTo(templ_7745c5c3_W)
+		}
+		return templ_7745c5c3_Err
+	})
+}
+
+func DiceSelectionCurrentCount(num int) templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
+		if !templ_7745c5c3_IsBuffer {
+			templ_7745c5c3_Buffer = templ.GetBuffer()
+			defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var17 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var17 == nil {
+			templ_7745c5c3_Var17 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"\n\t\tcounter pointer-events-none rounded-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-mono\n\t\tw-12 h-12 z-10 hidden items-center justify-center text-ctp-crust\n\t\tgroup-hover:bg-white\n\t\tgroup-hover:flex\n\t\ttext-2xl\n\t\tgroup-hover:text-xl\n\t\t\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var18 string
+		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(num))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 253, Col: 21}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("x</div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if !templ_7745c5c3_IsBuffer {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteTo(templ_7745c5c3_W)
+		}
+		return templ_7745c5c3_Err
+	})
+}
+
+func DiceSheen() templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
+		if !templ_7745c5c3_IsBuffer {
+			templ_7745c5c3_Buffer = templ.GetBuffer()
+			defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var19 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var19 == nil {
+			templ_7745c5c3_Var19 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"absolute inset-0.5 rounded overflow-hidden\"><div class=\"sheen pointer-events-none w-full h-[150%] absolute left-0 -top-3 opacity-0 z-10\"><div class=\"\n\t\t\t\t\tbg-gradient-to-r from-transparent to-transparent\n\t\t\t\t\tgroup-data-[rollValue=&#39;1&#39;]:via-ctp-subtext0\n\t\t\t\t\tgroup-data-[rollValue=&#39;2&#39;]:via-ctp-text\n\t\t\t\t\tgroup-data-[rollValue=&#39;3&#39;]:via-ctp-green\n\t\t\t\t\tgroup-data-[rollValue=&#39;4&#39;]:via-ctp-blue\n\t\t\t\t\tgroup-data-[rollValue=&#39;5&#39;]:via-ctp-mauve\n\t\t\t\t\tgroup-data-[rollValue=&#39;6&#39;]:via-ctp-yellow\n\t\t\t\t\tgroup-data-[rollValue=&#39;1&#39;]:w-1\n\t\t\t\t\tgroup-data-[rollValue=&#39;2&#39;]:w-2\n\t\t\t\t\tgroup-data-[rollValue=&#39;3&#39;]:w-4\n\t\t\t\t\tgroup-data-[rollValue=&#39;4&#39;]:w-8\n\t\t\t\t\tgroup-data-[rollValue=&#39;5&#39;]:w-12\n\t\t\t\t\tgroup-data-[rollValue=&#39;6&#39;]:w-16\n\t\t\t\t\th-full absolute left-1/2 -translate-x-1/2 -rotate-12\"></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
