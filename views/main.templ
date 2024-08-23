@@ -129,9 +129,8 @@ templ Dice(rollValue int, fromTheLeft int, checked bool) {
 		border-transparent
 		h-20 flex items-center justify-center
 		relative
-		[&_div.bg]:[&:has(input:checked)_+_label:has(input:checked)]:!opacity-100
-		[&_div.counter]:last-of-type:has-[input:checked]:flex
-		[&_div.counter]:[&:has(+_label_input:not(:checked)):has(input:checked)]:flex
+		//[&_div.counter]:last-of-type:has-[input:checked]:flex
+		//[&_div.counter]:[&:has(+_label_input:not(:checked)):has(input:checked)]:flex
 		"
 		_="
 		on dblclick 
@@ -211,14 +210,15 @@ templ Dice(rollValue int, fromTheLeft int, checked bool) {
 			@DiceSelectionCurrentCount(fromTheLeft + 1)
 			<div
 				class="
-				bg
+				hidden
+				group-[:not(:first-of-type):has(input:checked)]:block
 				group-data-[rollValue='1']:bg-ctp-subtext0
 				group-data-[rollValue='2']:bg-ctp-text
 				group-data-[rollValue='3']:bg-ctp-green
 				group-data-[rollValue='4']:bg-ctp-blue
 				group-data-[rollValue='5']:bg-ctp-mauve
 				group-data-[rollValue='6']:bg-ctp-yellow
-				absolute inset-0 -z-10 -translate-x-1/2 bg-ctp-blue opacity-0
+				absolute inset-0 -z-10 -translate-x-1/2 bg-ctp-blue
 				pointer-events-none"
 			></div>
 			switch rollValue {
@@ -246,8 +246,11 @@ templ DiceSelectionCurrentCount(num int) {
 		w-12 h-12 z-10 hidden items-center justify-center text-ctp-crust
 		group-hover:bg-white
 		group-hover:flex
-		text-2xl
-		group-hover:text-xl
+		text-xl
+		group-[:last-of-type:has(input:checked)]:text-2xl
+		group-has-[input:checked]:group-has-[+_label_input:not(:checked)]:text-2xl
+		group-[:last-of-type:has(input:checked)]:flex
+		group-has-[input:checked]:group-has-[+_label_input:not(:checked)]:flex
 		"
 	>
 		{ strconv.Itoa(num) }x
