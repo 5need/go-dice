@@ -330,14 +330,14 @@ func Dice(rollValue int, fromTheLeft int, checked bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"\n\t\tgroup\n\t\tdata-[rollValue=&#39;1&#39;]:[animation-delay:0ms]\n\t\tdata-[rollValue=&#39;2&#39;]:[animation-delay:25ms]\n\t\tdata-[rollValue=&#39;3&#39;]:[animation-delay:50ms]\n\t\tdata-[rollValue=&#39;4&#39;]:[animation-delay:75ms]\n\t\tdata-[rollValue=&#39;5&#39;]:[animation-delay:100ms]\n\t\tdata-[rollValue=&#39;6&#39;]:[animation-delay:125ms]\n\t\tborder-4\n\t\tborder-transparent\n\t\th-20 flex items-center justify-center\n\t\trelative\n\t\t[&amp;_div.bg]:[&amp;:has(input:checked)_+_label:has(input:checked)]:!opacity-100\n\t\t[&amp;_div.counter]:last-of-type:has-[input:checked]:flex\n\t\t[&amp;_div.counter]:[&amp;:has(+_label_input:not(:checked)):has(input:checked)]:flex\n\t\t\" _=\"\n\t\ton dblclick \n\t\t\trepeat in &lt;input/&gt; in the closest &lt;li/&gt;\n\t\t\t\tset it&#39;s checked to true\n\t\t\tend\n\t\tend\n\t\t\"><input data-rollValue=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"\n\t\tgroup\n\t\tdata-[rollValue=&#39;1&#39;]:[animation-delay:0ms]\n\t\tdata-[rollValue=&#39;2&#39;]:[animation-delay:25ms]\n\t\tdata-[rollValue=&#39;3&#39;]:[animation-delay:50ms]\n\t\tdata-[rollValue=&#39;4&#39;]:[animation-delay:75ms]\n\t\tdata-[rollValue=&#39;5&#39;]:[animation-delay:100ms]\n\t\tdata-[rollValue=&#39;6&#39;]:[animation-delay:125ms]\n\t\tborder-4\n\t\tborder-transparent\n\t\th-20 flex items-center justify-center\n\t\trelative\n\t\t//[&amp;_div.counter]:last-of-type:has-[input:checked]:flex\n\t\t//[&amp;_div.counter]:[&amp;:has(+_label_input:not(:checked)):has(input:checked)]:flex\n\t\t\" _=\"\n\t\ton dblclick \n\t\t\trepeat in &lt;input/&gt; in the closest &lt;li/&gt;\n\t\t\t\tset it&#39;s checked to true\n\t\t\tend\n\t\tend\n\t\t\"><input data-rollValue=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var14 string
 		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(rollValue))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 145, Col: 43}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 144, Col: 43}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 		if templ_7745c5c3_Err != nil {
@@ -350,7 +350,7 @@ func Dice(rollValue int, fromTheLeft int, checked bool) templ.Component {
 		var templ_7745c5c3_Var15 string
 		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(fromTheLeft))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 146, Col: 47}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 145, Col: 47}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 		if templ_7745c5c3_Err != nil {
@@ -373,7 +373,7 @@ func Dice(rollValue int, fromTheLeft int, checked bool) templ.Component {
 		var templ_7745c5c3_Var16 string
 		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(rollValue) + "@" + strconv.Itoa(fromTheLeft))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 149, Col: 68}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 148, Col: 68}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 		if templ_7745c5c3_Err != nil {
@@ -391,7 +391,7 @@ func Dice(rollValue int, fromTheLeft int, checked bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"\n\t\t\t\tbg\n\t\t\t\tgroup-data-[rollValue=&#39;1&#39;]:bg-ctp-subtext0\n\t\t\t\tgroup-data-[rollValue=&#39;2&#39;]:bg-ctp-text\n\t\t\t\tgroup-data-[rollValue=&#39;3&#39;]:bg-ctp-green\n\t\t\t\tgroup-data-[rollValue=&#39;4&#39;]:bg-ctp-blue\n\t\t\t\tgroup-data-[rollValue=&#39;5&#39;]:bg-ctp-mauve\n\t\t\t\tgroup-data-[rollValue=&#39;6&#39;]:bg-ctp-yellow\n\t\t\t\tabsolute inset-0 -z-10 -translate-x-1/2 bg-ctp-blue opacity-0\n\t\t\t\tpointer-events-none\"></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"\n\t\t\t\thidden\n\t\t\t\tgroup-[:not(:first-of-type):has(input:checked)]:block\n\t\t\t\tgroup-data-[rollValue=&#39;1&#39;]:bg-ctp-subtext0\n\t\t\t\tgroup-data-[rollValue=&#39;2&#39;]:bg-ctp-text\n\t\t\t\tgroup-data-[rollValue=&#39;3&#39;]:bg-ctp-green\n\t\t\t\tgroup-data-[rollValue=&#39;4&#39;]:bg-ctp-blue\n\t\t\t\tgroup-data-[rollValue=&#39;5&#39;]:bg-ctp-mauve\n\t\t\t\tgroup-data-[rollValue=&#39;6&#39;]:bg-ctp-yellow\n\t\t\t\tabsolute inset-0 -z-10 -translate-x-1/2 bg-ctp-blue\n\t\t\t\tpointer-events-none\"></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -451,14 +451,14 @@ func DiceSelectionCurrentCount(num int) templ.Component {
 			templ_7745c5c3_Var17 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"\n\t\tcounter pointer-events-none rounded-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-mono\n\t\tw-12 h-12 z-10 hidden items-center justify-center text-ctp-crust\n\t\tgroup-hover:bg-white\n\t\tgroup-hover:flex\n\t\ttext-2xl\n\t\tgroup-hover:text-xl\n\t\t\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"\n\t\tcounter pointer-events-none rounded-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-mono\n\t\tw-12 h-12 z-10 hidden items-center justify-center text-ctp-crust\n\t\tgroup-hover:bg-white\n\t\tgroup-hover:flex\n\t\ttext-xl\n\t\tgroup-[:last-of-type:has(input:checked)]:text-2xl\n\t\tgroup-has-[input:checked]:group-has-[+_label_input:not(:checked)]:text-2xl\n\t\tgroup-[:last-of-type:has(input:checked)]:flex\n\t\tgroup-has-[input:checked]:group-has-[+_label_input:not(:checked)]:flex\n\t\t\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(num))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 253, Col: 21}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/main.templ`, Line: 256, Col: 21}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
