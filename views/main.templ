@@ -74,7 +74,15 @@ templ AddDiceButton(num string) {
 templ DiceBox(rollStats models.RollStats) {
 	<ul id="diceBox" class="flex flex-col overflow-x-auto select-none">
 		for i := 5; i >= 0; i-- {
-			<li class="flex h-20 items-center min-w-max border-b border-ctp-surface0 last:border-none">
+			<li
+				class="flex h-20 items-center min-w-max border-b border-ctp-surface0 last:border-none"
+				_="
+				on touchmove(touch)
+					set the innerHTML of <div.info/> in me to touch.touches[0].clientX
+				end
+				"
+			>
+				<div class="info"></div>
 				<button class="font-mono h-12 w-20 border-2 border-ctp-blue/10 flex items-center justify-center">
 					<img src="images/16/solid/arrow-path.svg" class="inline-block invert"/>
 					if i+1 != 1 {
@@ -138,6 +146,9 @@ templ Dice(rollValue int, fromTheLeft int, checked bool) {
 				set it's checked to true
 			end
 		end
+		on touchmove
+			send lol to <input/> in me
+		end
 		"
 	>
 		<input
@@ -192,6 +203,11 @@ templ Dice(rollValue int, fromTheLeft int, checked bool) {
 					end
 				end
 			end
+
+			on lol
+				fillLeftClearRight()
+			end
+
 			"
 		/>
 		<div
