@@ -18,9 +18,9 @@ func ProductRoutes(e *echo.Echo) {
 	})
 	e.POST("/", func(c echo.Context) error {
 		type PostRequest struct {
-			Input         string   `form:"input"`
-			CurrentResult string   `form:"currentResult"`
-			Selection     []string `form:"selection"`
+			Input       string   `form:"input"`
+			CurrentRoll string   `form:"currentRoll"`
+			Selection   []string `form:"selection"`
 		}
 
 		u := new(PostRequest)
@@ -51,7 +51,7 @@ func ProductRoutes(e *echo.Echo) {
 			})
 		}
 
-		rawOutput, err := engine.RollDice(u.CurrentResult + u.Input)
+		rawOutput, err := engine.RollDice(u.CurrentRoll + u.Input)
 		if err != nil {
 			return err
 		}
