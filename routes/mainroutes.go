@@ -51,9 +51,27 @@ func ProductRoutes(e *echo.Echo) {
 			})
 		}
 
-		rawOutput, err := engine.RollDice(u.CurrentRoll + u.Input)
-		if err != nil {
-			return err
+		var rawOutput []int
+
+		if len(selectedDice) > 0 {
+			var selectedDiceValues []string
+			for _, thing := range selectedDice {
+				selectedDiceValues = append(selectedDiceValues, strconv.Itoa(thing.RollValue))
+			}
+			selectedRoll := "+[" + strings.Join(selectedDiceValues, ",") + "]"
+			selectedRollNegative := "-[" + strings.Join(selectedDiceValues, ",") + "]"
+
+			var err error
+			rawOutput, err = engine.RollDice(selectedRoll + u.Input + u.CurrentRoll + selectedRollNegative)
+			if err != nil {
+				return err
+			}
+		} else {
+			var err error
+			rawOutput, err = engine.RollDice(u.CurrentRoll + u.Input)
+			if err != nil {
+				return err
+			}
 		}
 
 		var strNumbers []string
