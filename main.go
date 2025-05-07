@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"go-dice/engine"
-	"go-dice/environment"
 	"go-dice/routes"
 	"net/http"
 	"os"
@@ -37,7 +36,7 @@ func main() {
 	e := echo.New()
 	e.Static("/", "static")
 
-	if environment.IsDevelopment() {
+	if env := os.Getenv("ENV"); env != "production" {
 		e.Use(
 			func(next echo.HandlerFunc) echo.HandlerFunc {
 				return func(c echo.Context) error {
@@ -59,7 +58,19 @@ func main() {
 	}))
 	e.Use(middleware.Recover())
 
-	routes.Init(e)
+	routes.Routes(e)
 
-	e.Logger.Fatal(e.Start(":" + environment.EnvVar("PORT")))
+	e.HTTPErrorHandler = func(err error, c echo.Context) {
+		code := http.StatusInternalServerError
+		if he, ok := err.(*echo.HTTPError); ok {
+			code = he.Code
+		}
+		if code == http.StatusNotFound {
+			c.String(http.StatusNotFound, "404 Not Found")
+			return
+		}
+		e.DefaultHTTPErrorHandler(err, c)
+	}
+
+	e.Logger.Fatal(e.Start(":3000"))
 }

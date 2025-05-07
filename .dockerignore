@@ -1,0 +1,4 @@
+*.tar
+.git/
+.air.toml
+.gitignore

@@ -7,7 +7,7 @@ import (
 )
 
 func Init(e *echo.Echo) {
-	ProductRoutes(e)
+	Routes(e)
 	e.HTTPErrorHandler = func(err error, c echo.Context) {
 		code := http.StatusInternalServerError
 		if he, ok := err.(*echo.HTTPError); ok {

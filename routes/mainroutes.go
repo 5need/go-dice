@@ -12,7 +12,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func ProductRoutes(e *echo.Echo) {
+func Routes(e *echo.Echo) {
 	e.GET("/", func(c echo.Context) error {
 		return views.Main().Render(c.Request().Context(), c.Response().Writer)
 	})

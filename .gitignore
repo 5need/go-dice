@@ -2,6 +2,7 @@
 static/
 tmp/
 bin/
+*.tar
 
 .air.toml
 dev.sh
@@ -181,3 +182,4 @@ dist
 
 # Finder (MacOS) folder config
 .DS_Store
+docker/docker-compose-secret.yaml
