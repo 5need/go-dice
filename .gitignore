@@ -3,6 +3,7 @@ static/
 tmp/
 bin/
 *.tar
+build.sh
 
 .air.toml
 dev.sh
