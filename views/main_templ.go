@@ -93,7 +93,7 @@ func Form(rollStats models.RollStats) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"flex flex-wrap gap-1\"><button type=\"button\" _=\"on click set the value of #input to &#39;-1+&#39; then send submit to the closest &lt;form/&gt;\" class=\"bg-surface0 h-16 w-24 rounded leading-none\">clear</button>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"flex flex-wrap gap-1\"><button type=\"button\" _=\"on click set the value of #input to &#39;-1+&#39; then send submit to the closest &lt;form/&gt;\" class=\"h-16 w-24 rounded bg-surface0 leading-none\">clear</button>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -117,7 +117,7 @@ func Form(rollStats models.RollStats) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<button type=\"button\" _=\"\n\t\t\t\ton click\n\t\t\t\t\trepeat in &lt;input[name=selection]/&gt;\n\t\t\t\t\t\tjs(it) it.checked = !it.checked; end\n\t\t\t\t\tend\n\t\t\t\tend\n\t\t\t\t\" class=\"bg-surface0 h-16 w-24 rounded leading-none\">invert selection</button></div><input id=\"input\" name=\"input\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<button type=\"button\" _=\"\n\t\t\t\ton click\n\t\t\t\t\trepeat in &lt;input[name=selection]/&gt;\n\t\t\t\t\t\tjs(it) it.checked = !it.checked; end\n\t\t\t\t\tend\n\t\t\t\tend\n\t\t\t\t\" class=\"h-16 w-24 rounded bg-surface0 leading-none\">invert selection</button></div><input id=\"input\" name=\"input\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -185,7 +185,7 @@ func AddDiceButton(num string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" class=\"bg-surface0 h-16 w-24 rounded leading-none\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" class=\"h-16 w-24 rounded bg-surface0 leading-none\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -232,7 +232,7 @@ func DiceBox(rollStats models.RollStats) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		for i := 5; i >= 0; i-- {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<li class=\"border-surface0 flex h-20 min-w-max items-center border-b last:border-none\" _=\"\n\t\t\t\ton touchmove(touch)\n\t\t\t\t\tset the innerHTML of &lt;div.info/&gt; in me to touch.touches[0].clientX\n\t\t\t\tend\n\t\t\t\t\"><div class=\"info\"></div><button class=\"border-blue/10 flex h-12 w-20 items-center justify-center border-2 font-mono\"><img src=\"images/16/solid/arrow-path.svg\" class=\"inline-block invert\"> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<li class=\"flex h-20 min-w-max items-center border-b border-surface0 last:border-none\" _=\"\n\t\t\t\ton touchmove(touch)\n\t\t\t\t\tset the innerHTML of &lt;div.info/&gt; in me to touch.touches[0].clientX\n\t\t\t\tend\n\t\t\t\t\"><div class=\"info\"></div><button class=\"flex h-12 w-20 items-center justify-center border-2 border-blue/10 font-mono\"><img src=\"images/16/solid/arrow-path.svg\" class=\"inline-block invert\"> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -408,7 +408,7 @@ func Dice(rollValue int, fromTheLeft int, checked bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\" type=\"checkbox\" class=\"peer hidden\" _=\"\n\t\t\tdef fillLeftClearRight()\n\t\t\t\tset y to my @data-fromTheLeft\n\t\t\t\tthen set y to parseInt(y)\n\t\t\t\tthen repeat in &lt;input/&gt; in the closest &lt;li/&gt;\n\t\t\t\t\tset x to it&#39;s @data-fromTheLeft\n\t\t\t\t\tthen set x to parseInt(x)\n\t\t\t\t\tthen if x &lt; y\n\t\t\t\t\t\tjs(it) it.checked = true; end\n\t\t\t\t\tend\n\t\t\t\t\tthen if x &gt; y\n\t\t\t\t\t\tjs(it) it.checked = false; end\n\t\t\t\t\tend\n\t\t\t\tend\n\t\t\tend\n\n\t\t\tdef clearAll()\n\t\t\t\trepeat in &lt;input/&gt; in the closest &lt;li/&gt;\n\t\t\t\t\tjs(it) it.checked = false; end\n\t\t\t\tend\n\t\t\tend\n\n\t\t\ton click\n\t\t\t\tif my checked == true\n\t\t\t\t\tfillLeftClearRight()\n\t\t\t\telse\n\t\t\t\t\tset isLast to true\n\t\t\t\t\tthen repeat in &lt;input:checked/&gt; in the closest &lt;li/&gt;\n\t\t\t\t\t\tset x to it&#39;s @data-fromTheLeft\n\t\t\t\t\t\tthen set x to parseInt(x)\n\t\t\t\t\t\tthen set y to my @data-fromTheLeft\n\t\t\t\t\t\tthen set y to parseInt(y)\n\t\t\t\t\t\tthen if x &gt; y\n\t\t\t\t\t\t\tset isLast to false\n\t\t\t\t\t\tend\n\t\t\t\t\tend\n\t\t\t\t\tthen if isLast\n\t\t\t\t\t\tclearAll()\n\t\t\t\t\telse\n\t\t\t\t\t\thalt the event\n\t\t\t\t\t\tthen fillLeftClearRight()\n\t\t\t\t\tend\n\t\t\t\tend\n\t\t\tend\n\n\t\t\ton lol\n\t\t\t\tfillLeftClearRight()\n\t\t\tend\n\n\t\t\t\"><div class=\"\n\t\t\tgroup-data-[rollValue=&#39;1&#39;]:bg-subtext0\n\t\t\tgroup-data-[rollValue=&#39;2&#39;]:bg-text\n\t\t\tgroup-data-[rollValue=&#39;3&#39;]:bg-green\n\t\t\tgroup-data-[rollValue=&#39;4&#39;]:bg-blue\n\t\t\tgroup-data-[rollValue=&#39;5&#39;]:bg-mauve\n\t\t\tgroup-data-[rollValue=&#39;6&#39;]:bg-yellow\n\t\t\tpointer-events-none relative h-12 w-12 rounded-lg\n\t\t\t[&amp;_img]:h-full\n\t\t\t[&amp;_img]:w-full\n\t\t\t[&amp;_img]:opacity-75\n\t\t\tpeer-checked:[&amp;_img]:opacity-10\n\t\t\t\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\" type=\"checkbox\" class=\"peer hidden\" _=\"\n\t\t\tdef fillLeftClearRight()\n\t\t\t\tset y to my @data-fromTheLeft\n\t\t\t\tthen set y to parseInt(y)\n\t\t\t\tthen repeat in &lt;input/&gt; in the closest &lt;li/&gt;\n\t\t\t\t\tset x to it&#39;s @data-fromTheLeft\n\t\t\t\t\tthen set x to parseInt(x)\n\t\t\t\t\tthen if x &lt; y\n\t\t\t\t\t\tjs(it) it.checked = true; end\n\t\t\t\t\tend\n\t\t\t\t\tthen if x &gt; y\n\t\t\t\t\t\tjs(it) it.checked = false; end\n\t\t\t\t\tend\n\t\t\t\tend\n\t\t\tend\n\n\t\t\tdef clearAll()\n\t\t\t\trepeat in &lt;input/&gt; in the closest &lt;li/&gt;\n\t\t\t\t\tjs(it) it.checked = false; end\n\t\t\t\tend\n\t\t\tend\n\n\t\t\ton click\n\t\t\t\tif my checked == true\n\t\t\t\t\tfillLeftClearRight()\n\t\t\t\telse\n\t\t\t\t\tset isLast to true\n\t\t\t\t\tthen repeat in &lt;input:checked/&gt; in the closest &lt;li/&gt;\n\t\t\t\t\t\tset x to it&#39;s @data-fromTheLeft\n\t\t\t\t\t\tthen set x to parseInt(x)\n\t\t\t\t\t\tthen set y to my @data-fromTheLeft\n\t\t\t\t\t\tthen set y to parseInt(y)\n\t\t\t\t\t\tthen if x &gt; y\n\t\t\t\t\t\t\tset isLast to false\n\t\t\t\t\t\tend\n\t\t\t\t\tend\n\t\t\t\t\tthen if isLast\n\t\t\t\t\t\tclearAll()\n\t\t\t\t\telse\n\t\t\t\t\t\thalt the event\n\t\t\t\t\t\tthen fillLeftClearRight()\n\t\t\t\t\tend\n\t\t\t\tend\n\t\t\tend\n\n\t\t\ton lol\n\t\t\t\tfillLeftClearRight()\n\t\t\tend\n\n\t\t\t\"><div class=\"\n\t\t\tpointer-events-none\n\t\t\trelative\n\t\t\th-12\n\t\t\tw-12\n\t\t\trounded-lg\n\t\t\tgroup-data-[rollValue=&#39;1&#39;]:bg-subtext0\n\t\t\tgroup-data-[rollValue=&#39;2&#39;]:bg-text group-data-[rollValue=&#39;3&#39;]:bg-green group-data-[rollValue=&#39;4&#39;]:bg-blue group-data-[rollValue=&#39;5&#39;]:bg-mauve group-data-[rollValue=&#39;6&#39;]:bg-yellow\n\t\t\t[&amp;_img]:h-full\n\t\t\t[&amp;_img]:w-full\n\t\t\t[&amp;_img]:opacity-75\n\t\t\tpeer-checked:[&amp;_img]:opacity-10\n\t\t\t\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -420,7 +420,7 @@ func Dice(rollValue int, fromTheLeft int, checked bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<div class=\"\n\t\t\t\tgroup-data-[rollValue=&#39;1&#39;]:bg-subtext0\n\t\t\t\tgroup-data-[rollValue=&#39;2&#39;]:bg-text\n\t\t\t\tgroup-data-[rollValue=&#39;3&#39;]:bg-green\n\t\t\t\tgroup-data-[rollValue=&#39;4&#39;]:bg-blue\n\t\t\t\tgroup-data-[rollValue=&#39;5&#39;]:bg-mauve\n\t\t\t\tgroup-data-[rollValue=&#39;6&#39;]:bg-yellow\n\t\t\t\tbg-blue\n\t\t\t\tpointer-events-none\n\t\t\t\tabsolute inset-0 -z-10 hidden -translate-x-1/2\n\t\t\t\tgroup-[:not(:first-of-type):has(input:checked)]:block\"></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<div class=\"\n\t\t\t\tpointer-events-none\n\t\t\t\tabsolute\n\t\t\t\tinset-0\n\t\t\t\t-z-10\n\t\t\t\thidden\n\t\t\t\t-translate-x-1/2\n\t\t\t\tbg-blue\n\t\t\t\tgroup-data-[rollValue=&#39;1&#39;]:bg-subtext0\n\t\t\t\tgroup-data-[rollValue=&#39;2&#39;]:bg-text group-data-[rollValue=&#39;3&#39;]:bg-green group-data-[rollValue=&#39;4&#39;]:bg-blue group-data-[rollValue=&#39;5&#39;]:bg-mauve group-data-[rollValue=&#39;6&#39;]:bg-yellow\n\t\t\t\tgroup-[:not(:first-of-type):has(input:checked)]:block\"></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -485,7 +485,7 @@ func DiceSelectionCurrentCount(num int) templ.Component {
 			templ_7745c5c3_Var17 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "<div class=\"\n\t\tcounter text-crust group-hover:bg-text pointer-events-none absolute top-1/2 left-1/2 z-10 hidden\n\t\th-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-lg\n\t\tfont-mono\n\t\ttext-xl\n\t\tgroup-hover:flex\n\t\tgroup-has-[input:checked]:group-has-[+_label_input:not(:checked)]:flex\n\t\tgroup-has-[input:checked]:group-has-[+_label_input:not(:checked)]:text-2xl\n\t\tgroup-[:last-of-type:has(input:checked)]:flex\n\t\tgroup-[:last-of-type:has(input:checked)]:text-2xl\n\t\t\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "<div class=\"\n\t\tcounter pointer-events-none absolute top-1/2 left-1/2 z-10 hidden h-12 w-12\n\t\t-translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-lg font-mono text-xl\n\t\ttext-crust\n\t\tgroup-hover:flex\n\t\tgroup-hover:bg-text\n\t\tgroup-has-[input:checked]:group-has-[+_label_input:not(:checked)]:flex\n\t\tgroup-has-[input:checked]:group-has-[+_label_input:not(:checked)]:text-2xl\n\t\tgroup-[:last-of-type:has(input:checked)]:flex\n\t\tgroup-[:last-of-type:has(input:checked)]:text-2xl\n\t\t\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -527,7 +527,7 @@ func DiceSheen() templ.Component {
 			templ_7745c5c3_Var19 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "<div class=\"absolute inset-0.5 overflow-hidden rounded\"><div class=\"sheen pointer-events-none absolute -top-3 left-0 z-10 h-[150%] w-full opacity-0\"><div class=\"\n\t\t\t\t\tgroup-data-[rollValue=&#39;1&#39;]:via-subtext0 group-data-[rollValue=&#39;2&#39;]:via-text group-data-[rollValue=&#39;3&#39;]:via-green\n\t\t\t\t\tgroup-data-[rollValue=&#39;4&#39;]:via-blue\n\t\t\t\t\tgroup-data-[rollValue=&#39;5&#39;]:via-mauve\n\t\t\t\t\tgroup-data-[rollValue=&#39;6&#39;]:via-yellow\n\t\t\t\t\tabsolute\n\t\t\t\t\tleft-1/2\n\t\t\t\t\th-full\n\t\t\t\t\t-translate-x-1/2\n\t\t\t\t\t-rotate-12\n\t\t\t\t\tbg-gradient-to-r\n\t\t\t\t\tfrom-transparent\n\t\t\t\t\tto-transparent\n\t\t\t\t\tgroup-data-[rollValue=&#39;1&#39;]:w-1\n\t\t\t\t\tgroup-data-[rollValue=&#39;2&#39;]:w-2 group-data-[rollValue=&#39;3&#39;]:w-4 group-data-[rollValue=&#39;4&#39;]:w-8 group-data-[rollValue=&#39;5&#39;]:w-12 group-data-[rollValue=&#39;6&#39;]:w-16\"></div></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "<div class=\"absolute inset-0.5 overflow-hidden rounded\"><div class=\"sheen pointer-events-none absolute -top-3 left-0 z-10 h-[150%] w-full opacity-0\"><div class=\"\n\t\t\t\t\tabsolute left-1/2 h-full\n\t\t\t\t\t-translate-x-1/2\n\t\t\t\t\t-rotate-12\n\t\t\t\t\tbg-gradient-to-r\n\t\t\t\t\tfrom-transparent\n\t\t\t\t\tto-transparent\n\t\t\t\t\tgroup-data-[rollValue=&#39;1&#39;]:w-1\n\t\t\t\t\tgroup-data-[rollValue=&#39;1&#39;]:via-subtext0\n\t\t\t\t\tgroup-data-[rollValue=&#39;2&#39;]:w-2\n\t\t\t\t\tgroup-data-[rollValue=&#39;2&#39;]:via-text\n\t\t\t\t\tgroup-data-[rollValue=&#39;3&#39;]:w-4\n\t\t\t\t\tgroup-data-[rollValue=&#39;3&#39;]:via-green\n\t\t\t\t\tgroup-data-[rollValue=&#39;4&#39;]:w-8\n\t\t\t\t\tgroup-data-[rollValue=&#39;4&#39;]:via-blue group-data-[rollValue=&#39;5&#39;]:w-12 group-data-[rollValue=&#39;5&#39;]:via-mauve group-data-[rollValue=&#39;6&#39;]:w-16 group-data-[rollValue=&#39;6&#39;]:via-yellow\"></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
